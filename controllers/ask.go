@@ -1,12 +1,11 @@
 package controllers
 
 import (
-	// "codesave/models"
+	m "codesave/models"
 	// "crypto/md5"
 	// "encoding/hex"
 	"fmt"
 	"github.com/astaxie/beego"
-	"strconv"
 )
 
 type AskController struct {
@@ -20,15 +19,28 @@ func (this *AskController) Get() {
 }
 
 func (this *AskController) Post() {
+	questuionIssue := m.QuestionIssue{}
+	fmt.Print(333)
+	if err := this.ParseForm(&questuionIssue); err != nil {
+		this.Ctx.Redirect(302, "/")
+	}
+	fmt.Print(questuionIssue)
+	qid, _ := this.GetInt("id")
+
+	if qid > 0 {
+		fmt.Print(qid)
+
+		this.Data["Intid"] = qid
+	} else {
+		fmt.Print(1233)
+		id, err := m.AddQuestionIssue(&questuionIssue)
+		if err != nil {
+			beego.Error(err)
+		}
+		this.Data["Intid"] = id
+	}
+
 	this.Layout = "layout.html"
 
 	this.TplNames = "templates/ask.html"
-
-	id := this.Input().Get("id")
-	intid, err := strconv.Atoi(id)
-
-	fmt.Println(err)
-	fmt.Println(intid)
-
-	this.Data["Intid"] = intid
 }

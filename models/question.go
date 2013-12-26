@@ -6,13 +6,13 @@ import (
 )
 
 type QuestionIssue struct {
-	Id           int64
-	Title        string    `orm:"size(32)"`
-	Content      string    `orm:"type(text)"`
-	Uid          int64     `orm:"index"`
-	RegisterTime time.Time `orm:"index;auto_now_add;type(datetime)"`
-	UpdateTime   time.Time `orm:"auto_now;type(datetime)"`
-	CommentNum   int64
+	Id          int64
+	Title       string    `orm:"size(32)"`
+	Content     string    `orm:"type(text)"`
+	Uid         int64     `orm:"index"`
+	PublishTime time.Time `orm:"index;auto_now_add;type(datetime)"`
+	UpdateTime  time.Time `orm:"auto_now;type(datetime)"`
+	CommentNum  int64
 }
 
 // 设置引擎为 INNODB
