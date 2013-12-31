@@ -2,10 +2,9 @@ package controllers
 
 import (
 	m "codesave/models"
-	// "crypto/md5"
-	// "encoding/hex"
-	"fmt"
 	"github.com/astaxie/beego"
+	"log"
+	"strconv"
 )
 
 type AskController struct {
@@ -13,6 +12,20 @@ type AskController struct {
 }
 
 func (this *AskController) Get() {
+	qid, _ := this.GetInt(":qid")
+
+	this.Data["edit"] = false //编辑问题标示
+	if qid > 0 {
+		questuionIssue, err := m.GetQuestionIssue(qid)
+
+		if err == nil {
+			this.Data["edit"] = true
+			this.Data["q"] = questuionIssue
+		} else {
+			log.Println(err)
+		}
+	}
+
 	this.Layout = "layout.html"
 
 	this.TplNames = "templates/ask.html"
@@ -20,27 +33,39 @@ func (this *AskController) Get() {
 
 func (this *AskController) Post() {
 	questuionIssue := m.QuestionIssue{}
-	fmt.Print(333)
 	if err := this.ParseForm(&questuionIssue); err != nil {
-		this.Ctx.Redirect(302, "/")
+		this.Redirect("/a", 302)
 	}
-	fmt.Print(questuionIssue)
-	qid, _ := this.GetInt("id")
 
-	if qid > 0 {
-		fmt.Print(qid)
+	id, err := m.AddQuestionIssue(&questuionIssue)
+	if err != nil {
+		this.Redirect("/a", 302)
+	}
 
-		this.Data["Intid"] = qid
-	} else {
-		fmt.Print(1233)
-		id, err := m.AddQuestionIssue(&questuionIssue)
+	if id > 0 {
+		url := "/a/" + strconv.Itoa(int(id))
+		this.Redirect(url, 302)
+	}
+}
+
+func (this *AskController) Put() {
+	questuionIssue := m.QuestionIssue{}
+	if err := this.ParseForm(&questuionIssue); err != nil {
+		this.Redirect("/a", 302)
+	}
+
+	if questuionIssue.Id > 0 {
+		_, err := m.GetQuestionIssue(questuionIssue.Id)
 		if err != nil {
-			beego.Error(err)
+			log.Println(err)
+			this.Redirect("/a", 302)
+		} else {
+			num, err := m.UpdateQuestionIssue(&questuionIssue)
+			log.Println(num, err)
+			url := "/a/" + strconv.Itoa(int(questuionIssue.Id))
+			this.Redirect(url, 302)
 		}
-		this.Data["Intid"] = id
+	} else {
+		this.Redirect("/a", 302)
 	}
-
-	this.Layout = "layout.html"
-
-	this.TplNames = "templates/ask.html"
 }

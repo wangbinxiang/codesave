@@ -4,15 +4,22 @@
 <style type="text/css">
 </style>
 <form class="form-signin" method="POST">
+	{{if .edit}}
+	<input name="_method" value="put" type="hidden">
+	<input name="Id" value="{{.q.Id}}" type="hidden">
+	{{end}}
 	<button class="btn btn-lg btn-primary btn-block" type="submit">Push</button>
 	<div class="input-group">
-		<span class="input-group-addon">标题</span>
-		<input type="text" name="Title" class="form-control" placeholder="请输入你的问题...">
+		<span class="input-group-addon">问题</span>
+		<input type="text" name="Title" class="form-control" placeholder="请输入你的问题..." {{if .edit}}value="{{.q.Title}}" {{end}} >
 	</div>
-
+	<div class="input-group">
+		<span class="input-group-addon">昵称</span>
+		<input type="text" name="Title" class="form-control" placeholder="请输入你的昵称..." {{if .edit}}value="{{.q.Title}}" {{end}} >
+	</div>
 	<div class="marketing">
 	<h4 class="text-muted">请输入你的代码。</h4>
-	<textarea spellcheck="false" class="tabIndent form-control"  id="editor"  rows="15" name="Content"></textarea>
+	<textarea spellcheck="false" class="tabIndent form-control"  id="editor"  rows="15" name="Content">{{if .edit}}{{.q.Content}}{{end}}</textarea>
 	</div>
 	<div class="marketing">
 	<pre>
@@ -21,15 +28,20 @@
 	</pre>
 	</div>
 </form>
-{{.Intid}}
 
 <script type="text/javascript">
-	tabIndent.renderAll();
-	$(function() {
-		$('#editor').bind('keyup', function(){
-			$('#previewEditor').text($(this).val());
-			$('#previewEditor').removeClass($('#previewEditor').attr('class'));
-			$('pre code').each(function(i, e) {hljs.highlightBlock(e)});
-		});
+tabIndent.renderAll();
+$(function() {
+	$('#editor').bind('keyup', contentKeyUp);
+	{{if .edit}}
+	contentKeyUp();
+	{{end}}
+});
+function contentKeyUp() {
+	$('#previewEditor').text($('#editor').val());
+	$('#previewEditor').removeClass($('#previewEditor').attr('class'));
+	$('pre code').each(function(i, e) {
+		hljs.highlightBlock(e)
 	});
+}
 </script>

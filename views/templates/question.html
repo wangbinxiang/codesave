@@ -1,44 +1,22 @@
-<link rel="stylesheet" href="/static/css/highlightjs/default.css">
-<script src="/static/js/highlight.pack.js"></script>
-
-<div class="marketing" onselectstart="return false;">
-<pre>
-	<code id="code">
-require_once 'Zend/Uri/Http.php';
-
-abstract class URI extends BaseURI
-{
-
-  /**
-   * Returns a URI
-   *
-   * @return  URI
-   */
-    static public function _factory($stats = array(), $uri = 'http')
-  {
-      echo __METHOD__;
-      $uri = explode(':', $uri, 0b10);
-      $schemeSpecific = isset($uri[1]) ? $uri[1] : '';
-      $desc = 'Multiline description';
-
-      // Security check
-      if (!ctype_alnum($scheme)) {
-          throw new Zend_Uri_Exception('Illegal scheme');
-      }
-
-      return [
-        'uri' => $uri,
-        'value' => null,
-      ];
-  }
-}
-
-__halt_compiler () ; datahere
-datahere
-datahere */
-datahere
-	</code>
-</pre>
+<link rel="stylesheet" href="/static/css/highlightjs/googlecode.css">
+<h1>{{.q.Title}}</h1>
+<h6>{{date .q.PublishTime "Y-m-d H:i:s"}}</h6>
+<div class="row marketing">
+  <div id="test" class="popover fade right in" style="top: 363px; left: 600px; display: block;">
+    <div id="testarrow" class="arrow"></div>
+    <div id="testTitle" class="popover-content" style="border-bottom: 1px solid #eee;display:none;">
+          <a>ooxx</a> <button type="button" class="close testClose" aria-hidden="true">&times;</button><button id="testHidden" type="button" class="close" aria-hidden="true">&minus;</button>
+    </div>
+    <div id="testpopovershort" class="pull-left popover-content text-primary">
+      输出JSON的时候， 首字母大写...<button type="button" class="close testClose" aria-hidden="true">&times;</button>
+    </div>
+    <div id="testpopovertotal" class="pull-left popover-content text-primary hidden">
+      输出JSON的时候， 首字母大写， 怎么转换成小写呢？<br /><br />struct 定义的首字母大写， 才可以对外访问， 输出之后也还是大写。。<br /><br />https://github.com/astaxie/bui...<br />原来文档里有答案，看的不够仔细<br /><br />type Topic struct {<br />Id int `json:"id"`<br />Title string `json:"title"`<br />Posttime string `json:"posttime"`<br />Author string `json:"author"`<br />}
+    </div>
+  </div>
+  <pre>
+  	<code id="code">{{.q.Content}}</code>
+  </pre>
 </div>
  <div id="myModal" class="modal fade">
   <div class="modal-dialog">
@@ -55,23 +33,12 @@ datahere
         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
         <button type="button" id="commentSubmit" class="btn btn-primary">发表</button>
       </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-<div id="popover" class="popover fade right in" style="top: 363px; left: 600px; display: hidden;"><div class="arrow"></div><div id="popoverButton" class="popover-content text-primary btn-link">评论</div></div>
-<div id="test" class="popover fade right in" style="top: 363px; left: 600px; display: block;">
-  <div id="testarrow" class="arrow"></div>
-  <div id="testTitle" class="popover-content" style="border-bottom: 1px solid #eee;display:none;">
-        <a>ooxx</a> <button type="button" class="close testClose" aria-hidden="true">&times;</button><button id="testHidden" type="button" class="close" aria-hidden="true">&minus;</button>
-  </div>
-  <div id="testpopovershort" class="pull-left popover-content text-primary">
-    输出JSON的时候， 首字母大写...<button type="button" class="close testClose" aria-hidden="true">&times;</button>
-  </div>
-  <div id="testpopovertotal" class="pull-left popover-content text-primary hidden">
-    输出JSON的时候， 首字母大写， 怎么转换成小写呢？<br /><br />struct 定义的首字母大写， 才可以对外访问， 输出之后也还是大写。。<br /><br />https://github.com/astaxie/bui...<br />原来文档里有答案，看的不够仔细<br /><br />type Topic struct {<br />Id int `json:"id"`<br />Title string `json:"title"`<br />Posttime string `json:"posttime"`<br />Author string `json:"author"`<br />}
+    </div>
   </div>
 </div>
+<div id="popover" class="popover fade right in" style="top: 363px; left: 600px; display: hidden;"><div class="arrow"></div><div id="popoverButton" class="popover-content text-primary btn-link">评论</div></div>
 
+<script src="/static/js/highlight.pack.js"></script>
 <script type="text/javascript">
 var _mouseLocation = {};
 $(function(){

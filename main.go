@@ -13,7 +13,13 @@ func init() {
 func main() {
 
 	beego.Router("/", &controllers.IndexController{})
+
 	beego.Router("/a", &controllers.AskController{})
-	beego.Router("/q", &controllers.QuestionController{})
+	beego.Router("/a/:qid:int", &controllers.AskController{})
+
+	beego.Router("/q/:qid:int", &controllers.QuestionController{})
+
+	beego.Router("/r", &controllers.RegisterController{})
+	beego.Router("/r/verify", &controllers.RegisterController{}, "*:Verify")
 	beego.Run()
 }
