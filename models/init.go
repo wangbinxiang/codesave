@@ -1,4 +1,4 @@
-package libs
+package models
 
 import (
 	"github.com/astaxie/beego"
@@ -24,5 +24,4 @@ func MysqlRegisterModelWithPrefix(models ...interface{}) {
 	for _, model := range models {
 		orm.RegisterModelWithPrefix(beego.AppConfig.String("mysqlPrefix"), model)
 	}
-
 }

@@ -1,0 +1,13 @@
+<link rel="stylesheet" href="/static/css/highlightjs/default.css">
+<script src="/static/js/highlight.pack.js"></script>
+<script src="/static/js/tabIndent.js"></script>
+<script src="/static/js/ask.js"></script>
+<script type="text/javascript">
+$(function() {
+	tabIndent.renderAll();
+	$('#editor').bind('keyup', contentKeyUp);
+	{{if .edit}}
+	contentKeyUp();
+	{{end}}
+});
+</script>

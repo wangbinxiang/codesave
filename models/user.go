@@ -2,7 +2,6 @@ package models
 
 import (
 	h "codesave/helper"
-	"codesave/libs"
 	"errors"
 	"github.com/astaxie/beego/validation"
 	"log"
@@ -28,7 +27,6 @@ func (u *UserAccount) TableEngine() string {
 func checkUserAccount(u *UserAccount) error {
 	valid := validation.Validation{}
 	b, _ := valid.Valid(u)
-	log.Println(b)
 	if !b {
 		for _, err := range valid.Errors {
 			log.Println(err.Key, err.Message)
@@ -39,7 +37,7 @@ func checkUserAccount(u *UserAccount) error {
 }
 
 func init() {
-	libs.MysqlRegisterModelWithPrefix(new(UserAccount))
+	MysqlRegisterModelWithPrefix(new(UserAccount))
 }
 
 func AddUserAccount(u *UserAccount) (int64, error) {
@@ -49,7 +47,7 @@ func AddUserAccount(u *UserAccount) (int64, error) {
 
 	u.Password = h.MD5(u.Password + u.Salt)
 
-	id, err := libs.Orm.Insert(u)
+	id, err := Orm.Insert(u)
 
 	return id, err
 }
@@ -57,7 +55,7 @@ func AddUserAccount(u *UserAccount) (int64, error) {
 func GetAllUserAccount() ([]*UserAccount, error) {
 	userAccount := make([]*UserAccount, 0)
 
-	qs := libs.Orm.QueryTable(new(UserAccount))
+	qs := Orm.QueryTable(new(UserAccount))
 
 	_, err := qs.All(&userAccount)
 	return userAccount, err
@@ -66,7 +64,16 @@ func GetAllUserAccount() ([]*UserAccount, error) {
 func GetUserAccountCountByColumn(column string, columnValue string) (int64, error) {
 	var table UserAccount
 
-	count, err := libs.Orm.QueryTable(table).Filter(column, columnValue).Count()
+	count, err := Orm.QueryTable(table).Filter(column, columnValue).Count()
 
 	return count, err
+}
+
+func GetUserAccountByEmail(email string) (UserAccount, error) {
+	var table UserAccount
+	userAccount := UserAccount{Email: email}
+
+	err := Orm.QueryTable(table).Filter("email", email).One(&userAccount)
+
+	return userAccount, err
 }

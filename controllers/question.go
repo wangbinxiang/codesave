@@ -1,15 +1,15 @@
 package controllers
 
 import (
+	"codesave/libs"
 	m "codesave/models"
 	// "crypto/md5"
 	// "encoding/hex"
-	"github.com/astaxie/beego"
 	"log"
 )
 
 type QuestionController struct {
-	beego.Controller
+	libs.BaseController
 }
 
 func (this *QuestionController) Get() {
@@ -26,7 +26,7 @@ func (this *QuestionController) Get() {
 		this.Ctx.Redirect(302, "/")
 	}
 
-	this.Layout = "layout.html"
+	this.LayoutSections["htmlHeader"] = "header/askHeader.html"
 
 	this.TplNames = "templates/question.html"
 }

@@ -2,12 +2,12 @@ package main
 
 import (
 	"codesave/controllers"
-	"codesave/libs"
+	"codesave/models"
 	"github.com/astaxie/beego"
 )
 
 func init() {
-	libs.MysqlRegisterDB()
+	models.MysqlRegisterDB()
 }
 
 func main() {
@@ -21,5 +21,10 @@ func main() {
 
 	beego.Router("/r", &controllers.RegisterController{})
 	beego.Router("/r/verify", &controllers.RegisterController{}, "*:Verify")
+
+	beego.Router("/l", &controllers.LoginController{})
+
+	beego.Router("/o", &controllers.LogoutController{})
+
 	beego.Run()
 }

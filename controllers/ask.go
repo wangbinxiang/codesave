@@ -1,14 +1,14 @@
 package controllers
 
 import (
+	"codesave/libs"
 	m "codesave/models"
-	"github.com/astaxie/beego"
 	"log"
 	"strconv"
 )
 
 type AskController struct {
-	beego.Controller
+	libs.BaseController
 }
 
 func (this *AskController) Get() {
@@ -26,7 +26,7 @@ func (this *AskController) Get() {
 		}
 	}
 
-	this.Layout = "layout.html"
+	this.LayoutSections["htmlHeader"] = "header/askHeader.html"
 
 	this.TplNames = "templates/ask.html"
 }
@@ -43,7 +43,7 @@ func (this *AskController) Post() {
 	}
 
 	if id > 0 {
-		url := "/a/" + strconv.Itoa(int(id))
+		url := "/q/" + strconv.Itoa(int(id))
 		this.Redirect(url, 302)
 	}
 }
@@ -62,7 +62,7 @@ func (this *AskController) Put() {
 		} else {
 			num, err := m.UpdateQuestionIssue(&questuionIssue)
 			log.Println(num, err)
-			url := "/a/" + strconv.Itoa(int(questuionIssue.Id))
+			url := "/q/" + strconv.Itoa(int(questuionIssue.Id))
 			this.Redirect(url, 302)
 		}
 	} else {

@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"codesave/libs"
 	"codesave/models"
 	// "crypto/md5"
 	// "encoding/hex"
@@ -8,7 +9,7 @@ import (
 )
 
 type IndexController struct {
-	beego.Controller
+	libs.BaseController
 }
 
 func (this *IndexController) Get() {
@@ -35,5 +36,4 @@ func (this *IndexController) Get() {
 	this.Data["Website"] = "beego.me"
 	this.Data["Email"] = "astaxie@gmail.com"
 	this.TplNames = "templates/index.html"
-	this.Layout = "layout.html"
 }

@@ -1,7 +1,6 @@
 package models
 
 import (
-	"codesave/libs"
 	"errors"
 	"github.com/astaxie/beego/orm"
 	"github.com/astaxie/beego/validation"
@@ -38,7 +37,7 @@ func checkQuestionIssue(q *QuestionIssue) error {
 }
 
 func init() {
-	libs.MysqlRegisterModelWithPrefix(new(QuestionIssue))
+	MysqlRegisterModelWithPrefix(new(QuestionIssue))
 }
 
 func AddQuestionIssue(q *QuestionIssue) (int64, error) {
@@ -46,7 +45,7 @@ func AddQuestionIssue(q *QuestionIssue) (int64, error) {
 		return 0, err
 	}
 
-	id, err := libs.Orm.Insert(q)
+	id, err := Orm.Insert(q)
 
 	return id, err
 }
@@ -54,7 +53,7 @@ func AddQuestionIssue(q *QuestionIssue) (int64, error) {
 func GetQuestionIssue(qid int64) (QuestionIssue, error) {
 	questionIssue := QuestionIssue{Id: qid}
 
-	err := libs.Orm.Read(&questionIssue)
+	err := Orm.Read(&questionIssue)
 
 	return questionIssue, err
 }
@@ -67,6 +66,6 @@ func UpdateQuestionIssue(q *QuestionIssue) (int64, error) {
 	questionIssue["Title"] = q.Title
 	questionIssue["Content"] = q.Content
 	var table QuestionIssue
-	num, err := libs.Orm.QueryTable(table).Filter("Id", q.Id).Update(questionIssue)
+	num, err := Orm.QueryTable(table).Filter("Id", q.Id).Update(questionIssue)
 	return num, err
 }

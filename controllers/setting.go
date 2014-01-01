@@ -1,12 +1,11 @@
 package controllers
 
 import (
-	"github.com/astaxie/beego"
-	// "codesave/models"
+	"codesave/libs"
 )
 
 type SettingController struct {
-	beego.Controller
+	libs.BaseController
 }
 
 func (this *SettingController) Get() {

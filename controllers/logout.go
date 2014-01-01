@@ -1,20 +1,25 @@
 package controllers
 
 import (
-	// "codesave/models"
-	// "crypto/md5"
-	// "encoding/hex"
+	"codesave/libs"
 	"github.com/astaxie/beego"
 )
 
 type LogoutController struct {
-	beego.Controller
+	libs.BaseController
+}
+
+func (this *LogoutController) Prepare() {
+	this.BaseController.Prepare()
+	if this.IsLogin != true {
+		this.Redirect("/l", 302)
+	}
 }
 
 func (this *LogoutController) Get() {
-
-}
-
-func (this *LogoutController) Post() {
-
+	cookieHash := beego.AppConfig.String("cookieHash")
+	cookieName := beego.AppConfig.String("cookieName")
+	this.DelSession("userinfo")
+	this.SetSecureCookie(cookieHash, cookieName, "", -86400)
+	this.Redirect("/", 302)
 }

@@ -2,17 +2,23 @@ package controllers
 
 import (
 	h "codesave/helper"
+	"codesave/libs"
 	m "codesave/models"
-	"github.com/astaxie/beego"
 	"log"
 )
 
 type RegisterController struct {
-	beego.Controller
+	libs.BaseController
+}
+
+func (this *RegisterController) Prepare() {
+	this.BaseController.Prepare()
+	if this.IsLogin {
+		this.Redirect("/", 302)
+	}
 }
 
 func (this *RegisterController) Get() {
-	this.Layout = "layout.html"
 
 	this.TplNames = "templates/register.html"
 }
@@ -28,7 +34,6 @@ func (this *RegisterController) Post() {
 	userAccount.Salt = h.GetRandomString(5)
 
 	id, err := m.AddUserAccount(&userAccount)
-	log.Println(id, err)
 	if err != nil {
 		this.Redirect("/r", 302)
 	}
