@@ -20,6 +20,8 @@ func (this *RegisterController) Prepare() {
 
 func (this *RegisterController) Get() {
 
+	this.LayoutSections["htmlFooter"] = "footer/registerFooter.html"
+
 	this.TplNames = "templates/register.html"
 }
 

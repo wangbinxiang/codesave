@@ -3,8 +3,6 @@ package controllers
 import (
 	"codesave/libs"
 	"codesave/models"
-	// "crypto/md5"
-	// "encoding/hex"
 	"github.com/astaxie/beego"
 )
 

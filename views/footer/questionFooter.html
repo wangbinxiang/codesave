@@ -1,0 +1,7 @@
+<link rel="stylesheet" href="/static/css/highlightjs/googlecode.css">
+<script src="http://cdn.staticfile.org/highlight.js/7.4/highlight.min.js"></script>
+<script src="/static/js/question.js"></script>
+<script type="text/javascript">
+$('#code').csNewComment({postUrl: '/c', qid: {{.q.Id}}, isLogin: {{if .isLogin}}true{{else}}false{{end}}{{if .isLogin}}, uid: {{.user.Id}}{{end}}});
+$('pre code').each(function(i, e) {hljs.highlightBlock(e)});
+</script>

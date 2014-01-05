@@ -1,0 +1,2 @@
+$.validationEngineLanguage.allRules.onlyLetterNumber = {"regex": /^([^x00-xff\s]|[0-9a-zA-Z_])+$/, "alertText": "* 只能输入英文字母，数字，汉字，下划线。"};
+$.validationEngineLanguage.allRules.ajaxUserCall.url = '/r/verify';

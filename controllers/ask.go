@@ -26,7 +26,7 @@ func (this *AskController) Get() {
 		}
 	}
 
-	this.LayoutSections["htmlHeader"] = "header/askHeader.html"
+	this.LayoutSections["htmlFooter"] = "footer/askFooter.html"
 
 	this.TplNames = "templates/ask.html"
 }
@@ -62,7 +62,7 @@ func (this *AskController) Put() {
 		} else {
 			num, err := m.UpdateQuestionIssue(&questuionIssue)
 			log.Println(num, err)
-			url := "/q/" + strconv.Itoa(int(questuionIssue.Id))
+			url := "/a/" + strconv.Itoa(int(questuionIssue.Id))
 			this.Redirect(url, 302)
 		}
 	} else {

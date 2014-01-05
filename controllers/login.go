@@ -23,6 +23,8 @@ func (this *LoginController) Prepare() {
 
 func (this *LoginController) Get() {
 
+	this.LayoutSections["htmlFooter"] = "footer/loginFooter.html"
+
 	this.TplNames = "templates/login.html"
 }
 

@@ -6,12 +6,6 @@ import (
 	"strings"
 )
 
-const (
-	COOKIEHASH = "csCookieHashHK48P"
-	COOKIENAME = "_cs"
-	COOKIESEP  = " "
-)
-
 type BaseController struct {
 	beego.Controller
 	IsLogin   bool

@@ -1,9 +1,10 @@
-<link rel="stylesheet" href="/static/css/highlightjs/default.css">
-<script src="/static/js/highlight.pack.js"></script>
+<link rel="stylesheet" href="/static/css/highlightjs/googlecode.css">
+<script src="http://cdn.staticfile.org/highlight.js/7.4/highlight.min.js"></script>
 <script src="/static/js/tabIndent.js"></script>
 <script src="/static/js/ask.js"></script>
 <script type="text/javascript">
 $(function() {
+	$('#askForm').validationEngine();
 	tabIndent.renderAll();
 	$('#editor').bind('keyup', contentKeyUp);
 	{{if .edit}}

@@ -3,8 +3,6 @@ package controllers
 import (
 	"codesave/libs"
 	m "codesave/models"
-	// "crypto/md5"
-	// "encoding/hex"
 	"log"
 )
 
@@ -26,7 +24,7 @@ func (this *QuestionController) Get() {
 		this.Ctx.Redirect(302, "/")
 	}
 
-	this.LayoutSections["htmlHeader"] = "header/askHeader.html"
+	this.LayoutSections["htmlFooter"] = "footer/questionFooter.html"
 
 	this.TplNames = "templates/question.html"
 }

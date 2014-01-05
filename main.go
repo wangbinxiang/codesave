@@ -26,5 +26,7 @@ func main() {
 
 	beego.Router("/o", &controllers.LogoutController{})
 
+	beego.Router("/c", &controllers.CommentController{})
+
 	beego.Run()
 }
