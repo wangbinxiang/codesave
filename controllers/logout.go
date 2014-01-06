@@ -11,9 +11,7 @@ type LogoutController struct {
 
 func (this *LogoutController) Prepare() {
 	this.BaseController.Prepare()
-	if this.IsLogin != true {
-		this.Redirect("/l", 302)
-	}
+	this.LoginJump(false)
 }
 
 func (this *LogoutController) Get() {

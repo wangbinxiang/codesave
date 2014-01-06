@@ -12,13 +12,7 @@ type CommentController struct {
 
 func (this *CommentController) Prepare() {
 	this.BaseController.Prepare()
-	if !this.IsLogin {
-		if this.IsAjax() {
-			this.StopRun()
-		} else {
-			this.Redirect("/", 302)
-		}
-	}
+	this.LoginJump(true)
 }
 
 func (this *CommentController) Post() {
@@ -28,11 +22,15 @@ func (this *CommentController) Post() {
 		if err := this.ParseForm(&commentInfo); err != nil {
 			log.Println(err)
 		} else {
-			log.Println(&commentInfo)
-			id, err := m.AddCommentInfo(&commentInfo)
+			_, err := m.GetQuestionIssue(int64(commentInfo.Qid))
 			if err == nil {
-				result["result"] = true
-				result["id"] = id
+				commentInfo.Uid = int(this.LoginUser.Id)
+				id, err := m.AddCommentInfo(&commentInfo)
+				log.Println(err)
+				if err == nil {
+					result["result"] = true
+					result["id"] = id
+				}
 			}
 		}
 		this.Data["json"] = result

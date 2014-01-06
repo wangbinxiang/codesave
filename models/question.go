@@ -10,9 +10,9 @@ import (
 
 type QuestionIssue struct {
 	Id          int64
-	Title       string    `orm:"size(32)"  valid:"Required;MinSize(5);MaxSize(150)"`
-	Content     string    `orm:"type(text)"  valid:"Required;MinSize(10);MaxSize(30000)"`
-	Uid         int64     `orm:"index"`
+	Title       string    `orm:"size(32)"  valid:"MinSize(5);MaxSize(150)"`
+	Content     string    `orm:"type(text)"  valid:"MinSize(10);MaxSize(30000)"`
+	Uid         int       `orm:"index" valid:"Min(1)"`
 	PublishTime time.Time `orm:"index;auto_now_add;type(datetime)"`
 	UpdateTime  time.Time `orm:"auto_now;type(datetime)"`
 	CommentNum  uint

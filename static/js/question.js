@@ -36,6 +36,14 @@
 			    $('#popover').hide();
 			});
 
+		    $('#commentText').keypress(function(e) { 
+				if (e.ctrlKey && e.which == 13) {
+					$('#commentSubmit').click();
+					return false;
+				}
+			})
+
+
 			$('#commentText').bind('keyup', _commentKey).bind('keydown', _commentKey);
 
 			$('#commentSubmit').bind('click', function(){
@@ -43,7 +51,7 @@
 					var position = _this.position();
 					var left = settings.mouseLocation.pageX - position.left;
 					var top = settings.mouseLocation.pageY - position.top;
-					var data = {Qid: settings.qid, Uid: settings.uid, Content: $('#commentText').val(), Left: left, Top: top};
+					var data = {Qid: settings.qid, Content: $('#commentText').val(), Left: left, Top: top};
 					$.ajax({
 						data: data,
 						url: settings.postUrl,

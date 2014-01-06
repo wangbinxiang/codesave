@@ -16,10 +16,16 @@ func (this *QuestionController) Get() {
 	if qid > 0 {
 		questuionIssue, err := m.GetQuestionIssue(qid)
 		if err == nil {
+			//获取评论
+			commentInfos, _, _ := m.GetCommentInfoListByQid(questuionIssue.Id, 1, 20)
+			log.Println(commentInfos)
+
 			this.Data["q"] = questuionIssue
 		} else {
 			log.Println(err)
+			this.Redirect("/", 302)
 		}
+
 	} else {
 		this.Ctx.Redirect(302, "/")
 	}

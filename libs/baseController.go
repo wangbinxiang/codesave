@@ -9,7 +9,7 @@ import (
 type BaseController struct {
 	beego.Controller
 	IsLogin   bool
-	LoginUser interface{}
+	LoginUser m.UserAccount
 }
 
 func (this *BaseController) Prepare() {
@@ -33,7 +33,7 @@ func (this *BaseController) checkLogin() {
 	userAccount := this.GetSession("userinfo")
 	if userAccount != nil {
 		this.IsLogin = true
-		this.LoginUser = userAccount
+		this.LoginUser = userAccount.(m.UserAccount)
 	} else {
 		userCookie, _ := this.GetSecureCookie(cookieHash, cookieName)
 		parts := strings.Split(userCookie, cookieSep)
@@ -53,9 +53,7 @@ func (this *BaseController) checkLogin() {
 					this.SetSecureCookie(cookieHash, cookieName, "", -86400)
 				}
 			}
-
 		}
-
 	}
 
 	if this.IsLogin {
@@ -63,6 +61,22 @@ func (this *BaseController) checkLogin() {
 		this.Data["user"] = this.LoginUser
 	} else {
 		this.Data["isLogin"] = false
+	}
+}
+
+func (this *BaseController) LoginJump(login bool) { //登陆跳转 true:要求登陆 false:要求不登陆
+	if login {
+		if !this.IsLogin {
+			if this.IsAjax() {
+				this.StopRun()
+			} else {
+				this.Redirect("/", 302)
+			}
+		}
+	} else {
+		if this.IsLogin {
+			this.Redirect("/", 302)
+		}
 	}
 
 }

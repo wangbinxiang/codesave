@@ -11,6 +11,11 @@ type AskController struct {
 	libs.BaseController
 }
 
+func (this *AskController) Prepare() {
+	this.BaseController.Prepare()
+	this.LoginJump(true)
+}
+
 func (this *AskController) Get() {
 	qid, _ := this.GetInt(":qid")
 
@@ -36,7 +41,7 @@ func (this *AskController) Post() {
 	if err := this.ParseForm(&questuionIssue); err != nil {
 		this.Redirect("/a", 302)
 	}
-
+	questuionIssue.Uid = int(this.LoginUser.Id)
 	id, err := m.AddQuestionIssue(&questuionIssue)
 	if err != nil {
 		this.Redirect("/a", 302)

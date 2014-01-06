@@ -16,9 +16,7 @@ type LoginController struct {
 
 func (this *LoginController) Prepare() {
 	this.BaseController.Prepare()
-	if this.IsLogin {
-		this.Redirect("/", 302)
-	}
+	this.LoginJump(false)
 }
 
 func (this *LoginController) Get() {

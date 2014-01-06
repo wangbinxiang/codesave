@@ -2,7 +2,7 @@ package models
 
 import (
 	"errors"
-	// "github.com/astaxie/beego/orm"
+	"github.com/astaxie/beego/orm"
 	"github.com/astaxie/beego/validation"
 	"log"
 	"time"
@@ -10,11 +10,11 @@ import (
 
 type CommentInfo struct {
 	Id          int64
-	Qid         int64     `orm:"index" valid:"Required"`
-	Uid         int64     `orm:"index" valid:"Required"`
+	Qid         int       `orm:"index" valid:"Max(100);Min(1)"`
+	Uid         int       `orm:"index" valid:"Max(100);Min(1)"`
 	Content     string    `orm:"size(255)" valid:"MinSize(5);MaxSize(765)"`
-	Left        string    `orm:"size(255)" valid:"Required;MaxSize(255);match(/^[+]?(0\\.\d+)|([1-9][0-9]*(\\.\d+)?)$/)"`
-	Top         string    `orm:"size(255)" valid:"Required;MaxSize(255);match(/^[+]?(0\\.\d+)|([1-9][0-9]*(\\.\d+)?)$/)"`
+	Left        string    `orm:"size(255)" valid:"MaxSize(255);Match(/^[0-9]\\d*\\.?\\d*$/)"`
+	Top         string    `orm:"size(255)" valid:"MaxSize(255);Match(/^[0-9]\\d*\\.?\\d*$/)"`
 	PublishTime time.Time `orm:"auto_now_add;type(datetime)"`
 }
 
@@ -54,8 +54,8 @@ func AddCommentInfo(c *CommentInfo) (int64, error) {
 	return id, err
 }
 
-func GetCommentInfoListByQid(qid int64, page int64, page_size int64) ([]*CommentInfo, int64, error) {
-	var commentInfos []*CommentInfo
+func GetCommentInfoListByQid(qid int64, page int64, page_size int64) ([]orm.Params, int64, error) {
+	var commentInfos []orm.Params
 	var offset int64
 	if page <= 1 {
 		offset = 0
@@ -64,7 +64,7 @@ func GetCommentInfoListByQid(qid int64, page int64, page_size int64) ([]*Comment
 	}
 
 	var table CommentInfo
-	count, err := Orm.QueryTable(table).Filter("qid", qid).Limit(page_size, offset).OrderBy("-id").All(commentInfos)
+	count, err := Orm.QueryTable(table).Filter("qid", qid).Limit(page_size, offset).OrderBy("-id").Values(&commentInfos)
 
 	return commentInfos, count, err
 }
