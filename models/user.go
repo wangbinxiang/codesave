@@ -3,6 +3,7 @@ package models
 import (
 	h "codesave/helper"
 	"errors"
+	"github.com/astaxie/beego/orm"
 	"github.com/astaxie/beego/validation"
 	"log"
 	"time"
@@ -59,6 +60,14 @@ func GetAllUserAccount() ([]*UserAccount, error) {
 
 	_, err := qs.All(&userAccount)
 	return userAccount, err
+}
+
+func GetUserAccountListByUids(uids []int64) ([]orm.Params, int64, error) {
+	var userAccounts []orm.Params
+	var table UserAccount
+	count, err := Orm.QueryTable(table).Filter("id__in", uids).Values(&userAccounts)
+
+	return userAccounts, count, err
 }
 
 func GetUserAccountCountByColumn(column string, columnValue string) (int64, error) {

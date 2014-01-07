@@ -43,7 +43,6 @@
 				}
 			})
 
-
 			$('#commentText').bind('keyup', _commentKey).bind('keydown', _commentKey);
 
 			$('#commentSubmit').bind('click', function(){
@@ -51,7 +50,8 @@
 					var position = _this.position();
 					var left = settings.mouseLocation.pageX - position.left;
 					var top = settings.mouseLocation.pageY - position.top;
-					var data = {Qid: settings.qid, Content: $('#commentText').val(), Left: left, Top: top};
+					var content = $('#commentText').val();
+					var data = {Qid: settings.qid, Content: content, Left: left, Top: top};
 					$.ajax({
 						data: data,
 						url: settings.postUrl,
@@ -61,18 +61,24 @@
 						complete : function(){
 						},
 						success: function(data){
-							console.log(data)
+							if (data.result && data.id > 0) {
+								$('#myModal').modal('hide');
+								idnsertComment(content, data.id, settings.mouseLocation.pageX, settings.mouseLocation.pageY);
+								$('#commentText').val('');
+								_commentKey();
+							};
 						},
 						dataType: 'json'
 					});
-					$('#myModal').modal('hide');
-					// _insertComment($('#commentText').val(), 1, settings.mouseLocation);
-					$('#commentText').val('');
-					_commentKey();
+					
 				};
-
-				return;
 		    });
+		}
+	});
+
+	$.extend({
+		csShowComment: function(comment, id, left, top) {
+			idnsertComment(comment, id, left, top);
 		}
 	});
 	
@@ -86,24 +92,21 @@
 			$('#commentNum').removeClass('text-danger');
 		}
 	}
-	var _i = 0;
-	function _insertComment(comment, id, mouseLocation){
+	var id = 0;
+	function idnsertComment(comment, id, left, top){
 		comment = htmlspecialchars($.trim(comment));
 		var shortComment = substr(comment, 0, 10);
-		_i++;
-		var top = mouseLocation.pageY - 22;
-		var left = mouseLocation.pageX + 5;
-		var commentHtml = '<div id="comment' + _i + '" class="popover fade right in" style="top: ' + top + 'px; left: ' + left + 'px; display: block;">\
-		<div id="commentArrow' + _i + '" class="arrow"></div>\
-		<div id="commentTitle' + _i + '" class="popover-content" style="border-bottom: 1px solid #eee;display:none;">\
-		<a>ooxx</a> <button type="button" class="close commentClose' + _i + '" aria-hidden="true">&times;</button><button id="commentHidden' + _i + '" type="button" class="close" aria-hidden="true">&minus;</button>\
+		var commentHtml = '<div id="comment' + id + '" class="popover fade right in" style="top: ' + top + 'px; left: ' + left + 'px; display: block;">\
+		<div id="commentArrow' + id + '" class="arrow"></div>\
+		<div id="commentTitle' + id + '" class="popover-content" style="border-bottom: 1px solid #eee;display:none;">\
+		<a>ooxx</a> <button type="button" class="close commentClose' + id + '" aria-hidden="true">&times;</button><button id="commentHidden' + id + '" type="button" class="close" aria-hidden="true">&minus;</button>\
 		</div>\
-		<div id="commentShort' + _i + '" class="pull-left popover-content text-primary">' + shortComment + '...<button type="button" class="close commentClose' + _i + '" aria-hidden="true">&times;</button>\
+		<div id="commentShort' + id + '" class="pull-left popover-content text-primary">' + shortComment + '...<button type="button" class="close commentClose' + id + '" aria-hidden="true">&times;</button>\
 		</div>\
-		<div id="commentTotal' + _i + '" class="pull-left popover-content text-primary hidden">' + nl2br(comment) + '</div>\
+		<div id="commentTotal' + id + '" class="pull-left popover-content text-primary hidden">' + nl2br(comment) + '</div>\
 		</div>';
 		$('body').append(commentHtml);
-		_bindComment(_i);
+		_bindComment(id);
 	}
 
 	function _bindComment(id){

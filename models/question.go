@@ -58,6 +58,21 @@ func GetQuestionIssue(qid int64) (QuestionIssue, error) {
 	return questionIssue, err
 }
 
+func GetQuestionIssueList(page int64, page_size int64) ([]orm.Params, int64, error) {
+	var questionIssues []orm.Params
+	var offset int64
+	if page <= 1 {
+		offset = 0
+	} else {
+		offset = (page - 1) * page_size
+	}
+
+	var table QuestionIssue
+	count, err := Orm.QueryTable(table).Limit(page_size, offset).OrderBy("-id").Values(&questionIssues)
+
+	return questionIssues, count, err
+}
+
 func UpdateQuestionIssue(q *QuestionIssue) (int64, error) {
 	if err := checkQuestionIssue(q); err != nil {
 		return 0, err
@@ -67,5 +82,11 @@ func UpdateQuestionIssue(q *QuestionIssue) (int64, error) {
 	questionIssue["Content"] = q.Content
 	var table QuestionIssue
 	num, err := Orm.QueryTable(table).Filter("Id", q.Id).Update(questionIssue)
+	return num, err
+}
+
+func AddQuestionIssueCommentNum(qid int64) (int64, error) {
+	var table QuestionIssue
+	num, err := Orm.QueryTable(table).Filter("Id", qid).Update(orm.Params{"comment_num": orm.ColValue(orm.Col_Add, 1)})
 	return num, err
 }

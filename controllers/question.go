@@ -17,8 +17,10 @@ func (this *QuestionController) Get() {
 		questuionIssue, err := m.GetQuestionIssue(qid)
 		if err == nil {
 			//获取评论
-			commentInfos, _, _ := m.GetCommentInfoListByQid(questuionIssue.Id, 1, 20)
-			log.Println(commentInfos)
+			commentInfos, count, _ := m.GetCommentInfoListByQid(questuionIssue.Id, 1, 20)
+			if count > 0 {
+				this.Data["c"] = commentInfos
+			}
 
 			this.Data["q"] = questuionIssue
 		} else {

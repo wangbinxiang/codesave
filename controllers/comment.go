@@ -25,11 +25,22 @@ func (this *CommentController) Post() {
 			_, err := m.GetQuestionIssue(int64(commentInfo.Qid))
 			if err == nil {
 				commentInfo.Uid = int(this.LoginUser.Id)
+
+				err := m.Orm.Begin()
+
 				id, err := m.AddCommentInfo(&commentInfo)
-				log.Println(err)
-				if err == nil {
-					result["result"] = true
-					result["id"] = id
+				if err != nil || id == 0 {
+					m.Orm.Rollback()
+				} else {
+					num, err := m.AddQuestionIssueCommentNum(int64(commentInfo.Qid))
+					if err != nil || num == 0 {
+						m.Orm.Rollback()
+					} else {
+						m.Orm.Commit()
+
+						result["result"] = true
+						result["id"] = id
+					}
 				}
 			}
 		}

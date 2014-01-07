@@ -2,8 +2,9 @@ package controllers
 
 import (
 	"codesave/libs"
-	"codesave/models"
+	m "codesave/models"
 	"github.com/astaxie/beego"
+	"log"
 )
 
 type IndexController struct {
@@ -11,27 +12,41 @@ type IndexController struct {
 }
 
 func (this *IndexController) Get() {
-	user_accounts, err := models.GetAllUserAccount()
+
+	page, _ := this.GetInt("page")
+
+	if page <= 0 {
+		page = 1
+	}
+	var pageSize int64
+	pageSize = 20
+
+	questionIssues, count, err := m.GetQuestionIssueList(page, pageSize)
+	log.Println(count)
 	if err != nil {
 		beego.Error(err)
+	} else {
+		uids := []int64{}
+		for _, v := range questionIssues {
+			uids = append(uids, v["Uid"].(int64))
+		}
+
+		userAccounts, count, err := m.GetUserAccountListByUids(uids)
+
+		if err != nil {
+			beego.Error(err)
+		} else {
+			userAccountList := map[int64]interface{}{}
+			for _, v := range userAccounts {
+				log.Println(v)
+				userAccountList[v["Id"].(int64)] = v
+			}
+			this.Data["u"] = userAccountList
+		}
+
+		this.Data["q"] = questionIssues
+		this.Data["count"] = count
 	}
 
-	// h := md5.New()
-	// h.Write([]byte("testPassword"))
-
-	// username := "testName2"
-	// password := hex.EncodeToString(h.Sum(nil))
-	// salt := "salts"
-
-	// id, err := models.AddUserAccount(username, password, salt)
-
-	// if err != nil {
-	// 	beego.Error(err)
-	// }
-	// println(id)
-
-	this.Data["user_accounts"] = user_accounts
-	this.Data["Website"] = "beego.me"
-	this.Data["Email"] = "astaxie@gmail.com"
 	this.TplNames = "templates/index.html"
 }
