@@ -24,6 +24,10 @@ func (this *AskController) Get() {
 		questuionIssue, err := m.GetQuestionIssue(qid)
 
 		if err == nil {
+			if this.LoginUser.Id != int64(questuionIssue.Uid) {
+				this.Redirect("/a", 302)
+			}
+
 			this.Data["edit"] = true
 			this.Data["q"] = questuionIssue
 		} else {

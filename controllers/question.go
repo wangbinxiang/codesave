@@ -36,3 +36,20 @@ func (this *QuestionController) Get() {
 
 	this.TplNames = "templates/question.html"
 }
+
+func (this *QuestionController) GetComment() {
+	qid, _ := this.GetInt("qid")
+	page, _ := this.GetInt("page")
+
+	if qid > 0 {
+		if page < 2 {
+			page = 2
+		}
+
+		commentInfos, count, _ := m.GetCommentInfoListByQid(qid, page, 20)
+		if count > 0 {
+			this.Data["json"] = map[string]interface{}{"c": commentInfos}
+		}
+	}
+	this.ServeJson()
+}

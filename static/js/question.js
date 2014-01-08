@@ -79,6 +79,9 @@
 	$.extend({
 		csShowComment: function(comment, id, left, top) {
 			idnsertComment(comment, id, left, top);
+		},
+		csLoadComment: function(){
+			
 		}
 	});
 	
