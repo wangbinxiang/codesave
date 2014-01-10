@@ -2,9 +2,10 @@
 <script src="http://cdn.staticfile.org/highlight.js/7.4/highlight.min.js"></script>
 <script src="/static/js/question.js"></script>
 <script type="text/javascript">
-var position = $('#code').position()
+var position = $('#code').position();
+var qid = {{.q.Id}};
 {{range .c}}
-$.csShowComment('{{.Content}}', '{{.Id}}', position.left + parseInt({{.Left}}), position.top + parseInt({{.Top}}));
+$.csShowComment('{{.Content}}', '{{.Id}}', '{{.Nickname}}', position.left + parseInt({{.Left}}), position.top + parseInt({{.Top}}));
 {{end}}
 {{if .isLogin}}
 $('#code').csNewComment({postUrl: '/c', qid: {{.q.Id}}, isLogin: {{if .isLogin}}true{{else}}false{{end}}{{if .isLogin}}, uid: {{.user.Id}}{{end}}});

@@ -3,6 +3,13 @@
 	<head>
 		{{template "header" .}}
 		{{.htmlHeader}}
+		<script type="text/javascript">
+			var isLogin = {{if .isLogin}}true{{else}}false{{end}};
+			{{if .isLogin}}
+			var user_id = {{.user.Id}};
+			var user_nickname = {{.user.Nickname}};
+			{{end}};
+		</script>
 	</head>
 	<body>
 		<div class="container">

@@ -1,5 +1,6 @@
 //1.初始化一个评论发布功能
 ;(function($){
+	var page = 1;
 	$.fn.extend({
 		csNewComment: function(options) {
 			var defaults = {
@@ -63,7 +64,7 @@
 						success: function(data){
 							if (data.result && data.id > 0) {
 								$('#myModal').modal('hide');
-								idnsertComment(content, data.id, settings.mouseLocation.pageX, settings.mouseLocation.pageY);
+								insertComment(content, data.id, user_nickname, settings.mouseLocation.pageX, settings.mouseLocation.pageY);
 								$('#commentText').val('');
 								_commentKey();
 							};
@@ -77,11 +78,31 @@
 	});
 
 	$.extend({
-		csShowComment: function(comment, id, left, top) {
-			idnsertComment(comment, id, left, top);
+		csShowComment: function(comment, id, nickname, left, top) {
+			insertComment(comment, id, nickname, left, top);
 		},
-		csLoadComment: function(){
-			
+		csLoadComment: function(next){
+			if (next) {
+				page++;
+			} else{
+				page --;
+			}
+			$.ajax({
+				data: {qid: qid, page: page},
+				url: '/q/c',
+				type: 'GET',
+				beforeSend : function(){
+				},
+				complete : function(){
+				},
+				success: function(data){
+					console.log(data);
+					// if (data.result && data.id > 0) {
+					// 	insertComment(content, data.id, user_nickname, settings.mouseLocation.pageX, settings.mouseLocation.pageY);
+					// };
+				},
+				dataType: 'json'
+			});
 		}
 	});
 	
@@ -96,13 +117,13 @@
 		}
 	}
 	var id = 0;
-	function idnsertComment(comment, id, left, top){
+	function insertComment(comment, id, nickname, left, top){
 		comment = htmlspecialchars($.trim(comment));
 		var shortComment = substr(comment, 0, 10);
 		var commentHtml = '<div id="comment' + id + '" class="popover fade right in" style="top: ' + top + 'px; left: ' + left + 'px; display: block;">\
 		<div id="commentArrow' + id + '" class="arrow"></div>\
 		<div id="commentTitle' + id + '" class="popover-content" style="border-bottom: 1px solid #eee;display:none;">\
-		<a>ooxx</a> <button type="button" class="close commentClose' + id + '" aria-hidden="true">&times;</button><button id="commentHidden' + id + '" type="button" class="close" aria-hidden="true">&minus;</button>\
+		<a>' + nickname + '</a> <button type="button" class="close commentClose' + id + '" aria-hidden="true">&times;</button><button id="commentHidden' + id + '" type="button" class="close" aria-hidden="true">&minus;</button>\
 		</div>\
 		<div id="commentShort' + id + '" class="pull-left popover-content text-primary">' + shortComment + '...<button type="button" class="close commentClose' + id + '" aria-hidden="true">&times;</button>\
 		</div>\
@@ -135,4 +156,3 @@
 		});
 	}
 })(jQuery)
-//2.执行显示已有评论功能

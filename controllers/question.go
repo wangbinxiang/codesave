@@ -3,6 +3,7 @@ package controllers
 import (
 	"codesave/libs"
 	m "codesave/models"
+	"github.com/astaxie/beego"
 	"log"
 )
 
@@ -17,8 +18,29 @@ func (this *QuestionController) Get() {
 		questuionIssue, err := m.GetQuestionIssue(qid)
 		if err == nil {
 			//获取评论
-			commentInfos, count, _ := m.GetCommentInfoListByQid(questuionIssue.Id, 1, 20)
+			commentInfos, count, _ := m.GetCommentInfoListByQid(questuionIssue.Id, 1, 5)
 			if count > 0 {
+
+				uids := []int64{}
+				for _, v := range commentInfos {
+					uids = append(uids, v["Uid"].(int64))
+				}
+
+				userAccounts, _, err := m.GetUserAccountListByUids(uids)
+
+				if err != nil {
+					beego.Error(err)
+				} else {
+					userAccountNicknameList := map[int64]string{}
+					for _, v := range userAccounts {
+						userAccountNicknameList[v["Id"].(int64)] = v["Nickname"].(string)
+					}
+
+					for k, v := range commentInfos {
+						commentInfos[k]["Nickname"] = userAccountNicknameList[v["Uid"].(int64)]
+					}
+				}
+
 				this.Data["c"] = commentInfos
 			}
 
@@ -46,8 +68,29 @@ func (this *QuestionController) GetComment() {
 			page = 2
 		}
 
-		commentInfos, count, _ := m.GetCommentInfoListByQid(qid, page, 20)
+		commentInfos, count, _ := m.GetCommentInfoListByQid(qid, page, 5)
 		if count > 0 {
+
+			uids := []int64{}
+			for _, v := range commentInfos {
+				uids = append(uids, v["Uid"].(int64))
+			}
+
+			userAccounts, _, err := m.GetUserAccountListByUids(uids)
+
+			if err != nil {
+				beego.Error(err)
+			} else {
+				userAccountNicknameList := map[int64]string{}
+				for _, v := range userAccounts {
+					userAccountNicknameList[v["Id"].(int64)] = v["Nickname"].(string)
+				}
+
+				for k, v := range commentInfos {
+					commentInfos[k]["Nickname"] = userAccountNicknameList[v["Uid"].(int64)]
+				}
+			}
+
 			this.Data["json"] = map[string]interface{}{"c": commentInfos}
 		}
 	}

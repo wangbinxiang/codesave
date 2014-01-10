@@ -19,6 +19,7 @@ func main() {
 	beego.Router("/a/:qid:int", &controllers.AskController{})
 
 	beego.Router("/q/:qid:int", &controllers.QuestionController{})
+	beego.Router("/q/c", &controllers.QuestionController{}, "*:GetComment")
 
 	beego.Router("/r", &controllers.RegisterController{})
 	beego.Router("/r/verify", &controllers.RegisterController{}, "*:Verify")

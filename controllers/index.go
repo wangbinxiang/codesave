@@ -17,7 +17,7 @@ func (this *IndexController) Get() {
 		page = 1
 	}
 	var pageSize int64
-	pageSize = 1
+	pageSize = 20
 
 	questionIssues, _, err := m.GetQuestionIssueList(page, pageSize)
 
@@ -34,13 +34,13 @@ func (this *IndexController) Get() {
 		if err != nil {
 			beego.Error(err)
 		} else {
-			userAccountList := map[int64]interface{}{}
+			userAccountNicknameList := map[int64]string{}
 			for _, v := range userAccounts {
-				userAccountList[v["Id"].(int64)] = v
+				userAccountNicknameList[v["Id"].(int64)] = v["Nickname"].(string)
 			}
 
 			for k, v := range questionIssues {
-				questionIssues[k]["UserAccount"] = userAccountList[v["Uid"].(int64)]
+				questionIssues[k]["Nickname"] = userAccountNicknameList[v["Uid"].(int64)]
 			}
 		}
 
