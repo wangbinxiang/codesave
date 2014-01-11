@@ -11,7 +11,7 @@ type LogoutController struct {
 
 func (this *LogoutController) Prepare() {
 	this.BaseController.Prepare()
-	this.LoginJump(false)
+	this.LoginJump(true)
 }
 
 func (this *LogoutController) Get() {

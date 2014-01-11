@@ -54,7 +54,7 @@ func AddCommentInfo(c *CommentInfo) (int64, error) {
 	return id, err
 }
 
-func GetCommentInfoListByQid(qid int64, page int64, page_size int64) ([]orm.Params, int64, error) {
+func GetCommentInfoListByQid(qid int64, page int64, page_size int64) ([]orm.Params, bool, error) {
 	var commentInfos []orm.Params
 	var offset int64
 	if page <= 1 {
@@ -64,7 +64,13 @@ func GetCommentInfoListByQid(qid int64, page int64, page_size int64) ([]orm.Para
 	}
 
 	var table CommentInfo
-	count, err := Orm.QueryTable(table).Filter("qid", qid).Limit(page_size, offset).OrderBy("-id").Values(&commentInfos)
+	count, err := Orm.QueryTable(table).Filter("qid", qid).Limit(page_size+1, offset).OrderBy("-id").Values(&commentInfos)
 
-	return commentInfos, count, err
+	more := false
+	if count > page_size {
+		more = true
+		commentInfos = commentInfos[:page_size]
+	}
+
+	return commentInfos, more, err
 }

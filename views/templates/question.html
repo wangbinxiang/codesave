@@ -7,7 +7,7 @@
 </div>
 <div class="bs-example">
 	<table class="table table-striped">
-		<tbody>
+		<tbody id="commentBody">
 			{{range .c}}
 			<tr>
 				<td>{{.Nickname}}</td>
@@ -18,8 +18,8 @@
 	</table>
 
 	<ul class="pager pull-right">
-			<li><a onclick="$.csLoadComment(false)">上一页</a></li>
-			<li><a onclick="$.csLoadComment(true)">下一页</a></li>
+			<li id="prevButton" style="display:none;"><a onclick="$.csLoadComment(false)">上一页</a></li>
+			<li id="nextButton" style="display:none;"><a onclick="$.csLoadComment(true)">下一页</a></li>
 	</ul>
 </div>
 

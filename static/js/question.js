@@ -64,7 +64,7 @@
 						success: function(data){
 							if (data.result && data.id > 0) {
 								$('#myModal').modal('hide');
-								insertComment(content, data.id, user_nickname, settings.mouseLocation.pageX, settings.mouseLocation.pageY);
+								$.csShowComment(content, data.id, user_nickname, settings.mouseLocation.pageX, settings.mouseLocation.pageY);
 								$('#commentText').val('');
 								_commentKey();
 							};
@@ -82,13 +82,14 @@
 			insertComment(comment, id, nickname, left, top);
 		},
 		csLoadComment: function(next){
+			var curPage
 			if (next) {
-				page++;
+				curPage = page + 1;
 			} else{
-				page --;
+				curPage = page - 1;
 			}
 			$.ajax({
-				data: {qid: qid, page: page},
+				data: {qid: qid, page: curPage},
 				url: '/q/c',
 				type: 'GET',
 				beforeSend : function(){
@@ -96,13 +97,42 @@
 				complete : function(){
 				},
 				success: function(data){
-					console.log(data);
-					// if (data.result && data.id > 0) {
-					// 	insertComment(content, data.id, user_nickname, settings.mouseLocation.pageX, settings.mouseLocation.pageY);
-					// };
+					if (data.c) {
+						$('.comment').remove();
+						for (var i = data.c.length - 1; i >= 0; i--) {
+							$.csShowComment(data.c[i].Content, data.c[i].Id, data.c[i].Nickname, position.left + parseFloat(data.c[i].Left), position.top + parseFloat(data.c[i].Top));
+						};
+						$.csShowCommentBody(data.c);
+						if (next) {
+							page ++;
+						} else{
+							page --;
+						}
+						$.csShowPageButton(data.cMore);
+					};
 				},
 				dataType: 'json'
 			});
+		},
+		csShowPageButton: function(more) {
+			if (more) {
+				$('#nextButton').show();
+			} else {
+				$('#nextButton').hide();
+			}
+
+			if (page > 1) {
+				$('#prevButton').show();
+			} else {
+				$('#prevButton').hide();
+			}
+		},
+		csShowCommentBody: function(comments) {
+			var html = '';
+			for (var i = comments.length - 1; i >= 0; i--) {
+				html += '<tr><td>' + comments[i].Nickname + '</td><td>' +substr(comments[i].Content, 0, 30) + '</td></tr>';
+			};
+			$('#commentBody').html(html);
 		}
 	});
 	
@@ -116,11 +146,10 @@
 			$('#commentNum').removeClass('text-danger');
 		}
 	}
-	var id = 0;
 	function insertComment(comment, id, nickname, left, top){
 		comment = htmlspecialchars($.trim(comment));
 		var shortComment = substr(comment, 0, 10);
-		var commentHtml = '<div id="comment' + id + '" class="popover fade right in" style="top: ' + top + 'px; left: ' + left + 'px; display: block;">\
+		var commentHtml = '<div id="comment' + id + '" class="comment popover fade right in" style="top: ' + top + 'px; left: ' + left + 'px; display: block;">\
 		<div id="commentArrow' + id + '" class="arrow"></div>\
 		<div id="commentTitle' + id + '" class="popover-content" style="border-bottom: 1px solid #eee;display:none;">\
 		<a>' + nickname + '</a> <button type="button" class="close commentClose' + id + '" aria-hidden="true">&times;</button><button id="commentHidden' + id + '" type="button" class="close" aria-hidden="true">&minus;</button>\

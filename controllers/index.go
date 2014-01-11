@@ -10,16 +10,15 @@ type IndexController struct {
 	libs.BaseController
 }
 
+var indexQuestionPageSize int64 = 2
+
 func (this *IndexController) Get() {
 	page, _ := this.GetInt(":page")
 
 	if page <= 0 {
 		page = 1
 	}
-	var pageSize int64
-	pageSize = 20
-
-	questionIssues, _, err := m.GetQuestionIssueList(page, pageSize)
+	questionIssues, more, err := m.GetQuestionIssueList(page, indexQuestionPageSize)
 
 	if err != nil {
 		beego.Error(err)
@@ -49,7 +48,7 @@ func (this *IndexController) Get() {
 			this.ServeJson()
 		} else {
 			this.Data["q"] = questionIssues
-			if count == pageSize {
+			if more {
 				this.Data["next"] = true
 				this.Data["nextPage"] = page + 1
 			}

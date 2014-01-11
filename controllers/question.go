@@ -11,6 +11,8 @@ type QuestionController struct {
 	libs.BaseController
 }
 
+var commentPageSize int64 = 5
+
 func (this *QuestionController) Get() {
 	qid, _ := this.GetInt(":qid")
 
@@ -18,8 +20,8 @@ func (this *QuestionController) Get() {
 		questuionIssue, err := m.GetQuestionIssue(qid)
 		if err == nil {
 			//获取评论
-			commentInfos, count, _ := m.GetCommentInfoListByQid(questuionIssue.Id, 1, 5)
-			if count > 0 {
+			commentInfos, more, err := m.GetCommentInfoListByQid(questuionIssue.Id, 1, commentPageSize)
+			if err == nil {
 
 				uids := []int64{}
 				for _, v := range commentInfos {
@@ -40,7 +42,7 @@ func (this *QuestionController) Get() {
 						commentInfos[k]["Nickname"] = userAccountNicknameList[v["Uid"].(int64)]
 					}
 				}
-
+				this.Data["cMore"] = more
 				this.Data["c"] = commentInfos
 			}
 
@@ -68,8 +70,8 @@ func (this *QuestionController) GetComment() {
 			page = 2
 		}
 
-		commentInfos, count, _ := m.GetCommentInfoListByQid(qid, page, 5)
-		if count > 0 {
+		commentInfos, more, err := m.GetCommentInfoListByQid(qid, page, commentPageSize)
+		if err == nil {
 
 			uids := []int64{}
 			for _, v := range commentInfos {
@@ -91,7 +93,7 @@ func (this *QuestionController) GetComment() {
 				}
 			}
 
-			this.Data["json"] = map[string]interface{}{"c": commentInfos}
+			this.Data["json"] = map[string]interface{}{"c": commentInfos, "cMore": more}
 		}
 	}
 	this.ServeJson()

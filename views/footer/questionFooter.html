@@ -7,8 +7,11 @@ var qid = {{.q.Id}};
 {{range .c}}
 $.csShowComment('{{.Content}}', '{{.Id}}', '{{.Nickname}}', position.left + parseInt({{.Left}}), position.top + parseInt({{.Top}}));
 {{end}}
-{{if .isLogin}}
-$('#code').csNewComment({postUrl: '/c', qid: {{.q.Id}}, isLogin: {{if .isLogin}}true{{else}}false{{end}}{{if .isLogin}}, uid: {{.user.Id}}{{end}}});
-{{end}}
-$('pre code').each(function(i, e) {hljs.highlightBlock(e)});
+$.csShowPageButton({{.cMore}});
+$(function() {
+	{{if .isLogin}}
+	$('#code').csNewComment({postUrl: '/c', qid: {{.q.Id}}, isLogin: {{if .isLogin}}true{{else}}false{{end}}{{if .isLogin}}, uid: {{.user.Id}}{{end}}});
+	{{end}}
+	$('pre code').each(function(i, e) {hljs.highlightBlock(e)});
+});
 </script>

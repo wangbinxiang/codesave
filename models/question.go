@@ -58,7 +58,7 @@ func GetQuestionIssue(qid int64) (QuestionIssue, error) {
 	return questionIssue, err
 }
 
-func GetQuestionIssueList(page int64, page_size int64) ([]orm.Params, int64, error) {
+func GetQuestionIssueList(page int64, page_size int64) ([]orm.Params, bool, error) {
 	var questionIssues []orm.Params
 	var offset int64
 	if page <= 1 {
@@ -68,9 +68,14 @@ func GetQuestionIssueList(page int64, page_size int64) ([]orm.Params, int64, err
 	}
 
 	var table QuestionIssue
-	count, err := Orm.QueryTable(table).Limit(page_size, offset).OrderBy("-id").Values(&questionIssues)
+	count, err := Orm.QueryTable(table).Limit(page_size+1, offset).OrderBy("-id").Values(&questionIssues)
+	more := false
+	if count > page_size {
+		more = true
+		questionIssues = questionIssues[:page_size]
+	}
 
-	return questionIssues, count, err
+	return questionIssues, more, err
 }
 
 func UpdateQuestionIssue(q *QuestionIssue) (int64, error) {
