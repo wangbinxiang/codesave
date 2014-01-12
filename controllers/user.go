@@ -27,7 +27,6 @@ func (this *UserController) Get() {
 	questionIssues, more, err := m.GetQuestionIssueListByUid(this.LoginUser.Id, page, userQuestionPageSize)
 
 	if this.IsAjax() {
-		// fmt.Println(t.Format("20060102 15:04:05"))
 		for k, _ := range questionIssues {
 			questionIssues[k]["PublishTime"] = questionIssues[k]["PublishTime"].(time.Time).Format("2006-01-02 15:04:05")
 			delete(questionIssues[k], "Content")

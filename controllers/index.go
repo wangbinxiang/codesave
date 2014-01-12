@@ -23,28 +23,31 @@ func (this *IndexController) Get() {
 	if err != nil {
 		beego.Error(err)
 	} else {
-		uids := []int64{}
-		for _, v := range questionIssues {
-			uids = append(uids, v["Uid"].(int64))
-		}
 
-		userAccounts, count, err := m.GetUserAccountListByUids(uids)
-
-		if err != nil {
-			beego.Error(err)
-		} else {
-			userAccountNicknameList := map[int64]string{}
-			for _, v := range userAccounts {
-				userAccountNicknameList[v["Id"].(int64)] = v["Nickname"].(string)
+		if len(questionIssues) > 0 {
+			uids := []int64{}
+			for _, v := range questionIssues {
+				uids = append(uids, v["Uid"].(int64))
 			}
 
-			for k, v := range questionIssues {
-				questionIssues[k]["Nickname"] = userAccountNicknameList[v["Uid"].(int64)]
+			userAccounts, _, err := m.GetUserAccountListByUids(uids)
+
+			if err != nil {
+				beego.Error(err)
+			} else {
+				userAccountNicknameList := map[int64]string{}
+				for _, v := range userAccounts {
+					userAccountNicknameList[v["Id"].(int64)] = v["Nickname"].(string)
+				}
+
+				for k, v := range questionIssues {
+					questionIssues[k]["Nickname"] = userAccountNicknameList[v["Uid"].(int64)]
+				}
 			}
 		}
 
 		if this.IsAjax() {
-			this.Data["json"] = map[string]interface{}{"q": questionIssues, "count": count}
+			this.Data["json"] = map[string]interface{}{"q": questionIssues, "more": more}
 			this.ServeJson()
 		} else {
 			this.Data["q"] = questionIssues
@@ -56,7 +59,7 @@ func (this *IndexController) Get() {
 				this.Data["prev"] = true
 				this.Data["prevPage"] = page - 1
 			}
-			this.Data["count"] = count
+			this.Data["more"] = more
 		}
 
 	}
