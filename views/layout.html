@@ -17,7 +17,7 @@
 				<ul class="nav nav-pills pull-right">
 				<li class="active"><a href="/">首页</a></li>
 				{{if .isLogin}}
-					<li><a>{{.user.Nickname}}</a></li>
+					<li><a href="/u">{{.user.Nickname}}</a></li>
 					<li><a href="/o">退出</a></li>
 				{{else}}
 					<li><a href="/r">注册</a></li>

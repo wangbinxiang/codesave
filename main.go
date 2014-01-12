@@ -30,5 +30,7 @@ func main() {
 
 	beego.Router("/c", &controllers.CommentController{})
 
+	beego.Router("/u", &controllers.UserController{})
+
 	beego.Run()
 }
