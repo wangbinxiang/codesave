@@ -30,6 +30,7 @@ func (this *AskController) Get() {
 
 			this.Data["edit"] = true
 			this.Data["q"] = questuionIssue
+
 		} else {
 			log.Println(err)
 		}
