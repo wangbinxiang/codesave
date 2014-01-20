@@ -35,7 +35,7 @@ func (this *RegisterController) Post() {
 	userAccount.Ip = this.Ctx.Input.IP()
 	challenge := this.GetString("recaptcha_challenge_field")
 	response := this.GetString("recaptcha_response_field")
-	recaptchaRes := h.GoogleRecaptcha("userAccount.Ip", challenge, response)
+	recaptchaRes := h.GoogleRecaptcha(userAccount.Ip, challenge, response)
 	log.Println(recaptchaRes)
 	if recaptchaRes {
 		userAccount.Salt = h.GetRandomString(5)
