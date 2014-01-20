@@ -10,7 +10,7 @@ type IndexController struct {
 	libs.BaseController
 }
 
-var indexQuestionPageSize int64 = 2
+var indexQuestionPageSize int64 = 10
 
 func (this *IndexController) Get() {
 	page, _ := this.GetInt(":page")

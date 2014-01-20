@@ -15,7 +15,7 @@ func (this *UserController) Prepare() {
 	this.LoginJump(true)
 }
 
-var userQuestionPageSize int64 = 1
+var userQuestionPageSize int64 = 10
 
 func (this *UserController) Get() {
 	page, err := this.GetInt("page")

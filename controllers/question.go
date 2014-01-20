@@ -11,7 +11,7 @@ type QuestionController struct {
 	libs.BaseController
 }
 
-var commentPageSize int64 = 5
+var commentPageSize int64 = 10
 
 func (this *QuestionController) Get() {
 	qid, _ := this.GetInt(":qid")
