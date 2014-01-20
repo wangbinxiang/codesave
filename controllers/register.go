@@ -4,6 +4,7 @@ import (
 	h "codesave/helper"
 	"codesave/libs"
 	m "codesave/models"
+	"github.com/astaxie/beego"
 	"html/template"
 	"log"
 )
@@ -19,6 +20,7 @@ func (this *RegisterController) Prepare() {
 
 func (this *RegisterController) Get() {
 
+	this.Data["publicKey"] = beego.AppConfig.String("googleRecaptchaPublicKey")
 	this.LayoutSections["htmlFooter"] = "footer/registerFooter.html"
 
 	this.Data["xsrfdata"] = template.HTML(this.XsrfFormHtml())
@@ -33,9 +35,10 @@ func (this *RegisterController) Post() {
 	}
 
 	userAccount.Ip = this.Ctx.Input.IP()
+	privateKey := beego.AppConfig.String("googleRecaptchaPrivateKey")
 	challenge := this.GetString("recaptcha_challenge_field")
 	response := this.GetString("recaptcha_response_field")
-	recaptchaRes := h.GoogleRecaptcha(userAccount.Ip, challenge, response)
+	recaptchaRes := h.GoogleRecaptcha(privateKey, userAccount.Ip, challenge, response)
 	log.Println(recaptchaRes)
 	if recaptchaRes {
 		userAccount.Salt = h.GetRandomString(5)

@@ -846,6 +846,7 @@ func GetRandomString(n int) string {
 	return string(bytes)
 }
 
-func GoogleRecaptcha(ip, challenge, response string) bool {
+func GoogleRecaptcha(privateKey, ip, challenge, response string) bool {
+	recaptcha.Init(privateKey)
 	return recaptcha.Confirm(ip, challenge, response)
 }
