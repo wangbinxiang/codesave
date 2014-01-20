@@ -12,6 +12,7 @@ import (
 	"encoding/pem"
 	"errors"
 	"fmt"
+	"github.com/dpapathanasiou/go-recaptcha"
 	"html/template"
 	"io"
 	"math"
@@ -843,4 +844,8 @@ func GetRandomString(n int) string {
 		bytes[i] = alphanum[b%byte(len(alphanum))]
 	}
 	return string(bytes)
+}
+
+func GoogleRecaptcha(ip, challenge, response string) bool {
+	return recaptcha.Confirm(ip, challenge, response)
 }

@@ -4,6 +4,7 @@ import (
 	h "codesave/helper"
 	"codesave/libs"
 	m "codesave/models"
+	"html/template"
 	"log"
 )
 
@@ -20,6 +21,8 @@ func (this *RegisterController) Get() {
 
 	this.LayoutSections["htmlFooter"] = "footer/registerFooter.html"
 
+	this.Data["xsrfdata"] = template.HTML(this.XsrfFormHtml())
+
 	this.TplNames = "templates/register.html"
 }
 
@@ -30,16 +33,23 @@ func (this *RegisterController) Post() {
 	}
 
 	userAccount.Ip = this.Ctx.Input.IP()
+	challenge := this.GetString("recaptcha_challenge_field")
+	response := this.GetString("recaptcha_response_field")
+	recaptchaRes := h.GoogleRecaptcha("userAccount.Ip", challenge, response)
+	log.Println(recaptchaRes)
+	if recaptchaRes {
+		userAccount.Salt = h.GetRandomString(5)
 
-	userAccount.Salt = h.GetRandomString(5)
+		id, err := m.AddUserAccount(&userAccount)
+		if err != nil {
+			this.Redirect("/r", 302)
+		}
 
-	id, err := m.AddUserAccount(&userAccount)
-	if err != nil {
+		if id > 0 {
+			this.Redirect("/", 302)
+		}
+	} else {
 		this.Redirect("/r", 302)
-	}
-
-	if id > 0 {
-		this.Redirect("/", 302)
 	}
 }
 
