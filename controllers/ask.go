@@ -1,8 +1,9 @@
 package controllers
 
 import (
-	"codesave/libs"
-	m "codesave/models"
+	"github.com/wangbinxiang/codesave/libs"
+	m "github.com/wangbinxiang/codesave/models"
+	"html/template"
 	"log"
 	"strconv"
 )
@@ -35,6 +36,8 @@ func (this *AskController) Get() {
 			log.Println(err)
 		}
 	}
+
+	this.Data["xsrfdata"] = template.HTML(this.XsrfFormHtml())
 
 	this.LayoutSections["htmlFooter"] = "footer/askFooter.html"
 

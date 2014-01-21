@@ -1,8 +1,8 @@
 package routers
 
 import (
-	"codesave/controllers"
 	"github.com/astaxie/beego"
+	"github.com/wangbinxiang/codesave/controllers"
 )
 
 func init() {

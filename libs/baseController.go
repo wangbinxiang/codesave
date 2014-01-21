@@ -1,8 +1,8 @@
 package libs
 
 import (
-	m "codesave/models"
 	"github.com/astaxie/beego"
+	m "github.com/wangbinxiang/codesave/models"
 	"strings"
 )
 

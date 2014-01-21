@@ -1,10 +1,10 @@
 package models
 
 import (
-	h "codesave/helper"
 	"errors"
 	"github.com/astaxie/beego/orm"
 	"github.com/astaxie/beego/validation"
+	h "github.com/wangbinxiang/codesave/helper"
 	"log"
 	"time"
 )

@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"codesave/libs"
-	m "codesave/models"
+	"github.com/wangbinxiang/codesave/libs"
+	m "github.com/wangbinxiang/codesave/models"
 	"log"
 )
 

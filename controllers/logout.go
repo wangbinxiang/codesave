@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"codesave/libs"
 	"github.com/astaxie/beego"
+	"github.com/wangbinxiang/codesave/libs"
 )
 
 type LogoutController struct {

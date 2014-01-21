@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"codesave/libs"
+	"github.com/wangbinxiang/codesave/libs"
 )
 
 type SettingController struct {

@@ -6,6 +6,7 @@
 	<div class="form-group">
 		<label><h2>你的问题</h2></label><h2 class="pull-right"><button class="btn btn-primary" type="submit">提交问题</button></h2>
 		<input type="text" name="Title" class="form-control validate[required,minSize[5],maxSize[50]]" placeholder="请输入你的问题..." {{if .edit}}value="{{.q.Title}}" {{end}} >
+		{{ .xsrfdata }}
 	</div>
 	<div class="marketing">
 		<h4 class="text-muted">请输入你的代码。</h4>

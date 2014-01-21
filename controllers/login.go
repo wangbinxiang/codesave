@@ -1,11 +1,12 @@
 package controllers
 
 import (
-	h "codesave/helper"
-	"codesave/libs"
-	m "codesave/models"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/validation"
+	h "github.com/wangbinxiang/codesave/helper"
+	"github.com/wangbinxiang/codesave/libs"
+	m "github.com/wangbinxiang/codesave/models"
+	"html/template"
 	"log"
 	"strconv"
 )
@@ -23,11 +24,12 @@ func (this *LoginController) Get() {
 
 	this.LayoutSections["htmlFooter"] = "footer/loginFooter.html"
 
+	this.Data["xsrfdata"] = template.HTML(this.XsrfFormHtml())
+
 	this.TplNames = "templates/login.html"
 }
 
 func (this *LoginController) Post() {
-
 	email := this.GetString("Email")
 	password := this.GetString("Password")
 

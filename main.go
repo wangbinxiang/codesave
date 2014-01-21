@@ -1,9 +1,9 @@
 package main
 
 import (
-	"codesave/models"
-	_ "codesave/routers"
 	"github.com/astaxie/beego"
+	"github.com/wangbinxiang/codesave/models"
+	_ "github.com/wangbinxiang/codesave/routers"
 )
 
 func init() {

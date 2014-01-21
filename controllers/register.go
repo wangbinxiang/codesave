@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	h "codesave/helper"
-	"codesave/libs"
-	m "codesave/models"
 	"github.com/astaxie/beego"
+	h "github.com/wangbinxiang/codesave/helper"
+	"github.com/wangbinxiang/codesave/libs"
+	m "github.com/wangbinxiang/codesave/models"
 	"html/template"
 	"log"
 )

@@ -52,7 +52,12 @@
 					var left = settings.mouseLocation.pageX - position.left;
 					var top = settings.mouseLocation.pageY - position.top;
 					var content = $('#commentText').val();
-					var data = {Qid: settings.qid, Content: content, Left: left, Top: top};
+					
+					var xsrf, xsrflist;
+					xsrf = $.cookie("_xsrf");
+					xsrflist = xsrf.split("|");
+
+					var data = {Qid: settings.qid, Content: content, Left: left, Top: top, _xsrf: base64_decode(xsrflist[0])};
 					$.ajax({
 						data: data,
 						url: settings.postUrl,
