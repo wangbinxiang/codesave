@@ -1,9 +1,11 @@
 <script src="/static/js/register.js"></script>
-<script type="text/javascript" src="http://www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script>
+<script type="text/javascript" src="/static/js/recaptcha_ajax.js"></script>
 <script type="text/javascript">
 $(function(){
 	$('#registerForm').validationEngine();
+	{{if .showRecaptcha}}
 	showRecaptcha('{{.publicKey}}');
+	{{end}}
 });
 
 </script>
