@@ -69,7 +69,7 @@ func (this *RegisterController) Post() {
 		registerStr = Memcache.Get(registerKey).(string)
 		registerNumber, err = strconv.Atoi(registerStr)
 		if err == nil {
-			if registerNumber >= registerRecaptchaNumber {
+			if registerNumber > registerRecaptchaNumber {
 				noNeedRecaptcha = false
 				recaptchaCheck = h.GoogleRecaptcha(privateKey, userAccount.Ip, challenge, response)
 			}
@@ -93,6 +93,15 @@ func (this *RegisterController) Post() {
 				} else {
 					Memcache.Put(registerKey, "1", registerExpired)
 				}
+
+				cookieHash := beego.AppConfig.String("cookieHash")
+				cookieName := beego.AppConfig.String("cookieName")
+				cookieSep := beego.AppConfig.String("cookieSep")
+
+				cookieStr := strconv.Itoa(int(id)) + cookieSep + userAccount.Email + cookieSep + userAccount.Password
+				this.SetSecureCookie(cookieHash, cookieName, cookieStr, 604800)
+				this.SetSession("userinfo", userAccount)
+
 				this.Redirect("/", 302)
 			}
 		}
