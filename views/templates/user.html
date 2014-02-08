@@ -1,23 +1,25 @@
 <a class="pull-right" href="/o"><button class="btn btn-primary" type="button">退出</button></a>
+<h5>积分[0000] 等级[产品经理]</h5>
+<h3>你分享的代码</h3>
 <div class="bs-example">
 	<table class="table table-striped">
 		<thead>
 			<tr>
-				<th>#</th>
-				<th>问题标题</th>
+				<th>标题</th>
 				<th>发布时间</th>
-				<th>评论数</th>
+				<th>吐槽数</th>
+				<th>分享(施工中..)</th>
 				<th>操作</th>
 			</tr>
 		</thead>
 		<tbody id="questionBody">
 			{{range .q}}
 			<tr>
-				<td>{{.Id}}</td>
 				<td><a href="/q/{{.Id}}">{{.Title}}</a></td>
 				<td>{{date .PublishTime "Y-m-d H:i:s"}}</td>
 				<td>{{.CommentNum}}</td>
-				<td><a href="/a/{{.Id}}">编辑</a></td>
+				<td><a href="#"><img src="http://www.sinaimg.cn/blog/developer/wiki/LOGO_16x16.png"></a></td>
+				<td><a href="/a/{{.Id}}">编辑</a> </td>
 			</tr>
 			{{end}}
 		</tbody>
