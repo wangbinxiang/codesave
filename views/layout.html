@@ -15,13 +15,12 @@
 		<div class="container">
 			<div class="header">
 				<ul class="nav nav-pills pull-right">
-				<li class="active"><a href="/">首页</a></li>
 				{{if .isLogin}}
-					<li><a href="/u">{{.user.Nickname}}</a></li>
-					<li><a href="/o">退出</a></li>
+					<li><a href="/u">你好, {{.user.Nickname}}</a></li>
+					<li><a href="/a">分享代码</a></li>
 				{{else}}
 					<li><a href="/r">注册</a></li>
-					<li><a href="/l">登陆</a></li>
+					<li><a href="/l">登录</a></li>
 				{{end}}
 				</ul>
 				<h3 class="text-muted"><a href="/">CodeSave</a></h3>
