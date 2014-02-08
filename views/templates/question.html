@@ -2,7 +2,7 @@
 <h6>{{date .q.PublishTime "Y-m-d H:i:s"}}</h6>
 <div class="row marketing">
   <pre>
-  	<code id="code" >{{.q.Content}}</code>
+  	<code class="prettyprint linenums" id="code" >{{.q.Content}}</code>
   </pre>
 </div>
 <div class="bs-example">
@@ -16,7 +16,6 @@
 			{{end}}
 		</tbody>
 	</table>
-
 	<ul class="pager pull-right">
 			<li id="prevButton" style="display:none;"><a onclick="$.csLoadComment(false)">上一页</a></li>
 			<li id="nextButton" style="display:none;"><a onclick="$.csLoadComment(true)">下一页</a></li>

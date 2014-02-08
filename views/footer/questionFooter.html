@@ -2,6 +2,13 @@
 <script src="http://cdn.staticfile.org/highlight.js/7.4/highlight.min.js"></script>
 <script src="http://cdn.staticfile.org/jquery-cookie/1.4.0/jquery.cookie.min.js"></script>
 <script src="/static/js/question.js"></script>
+<link rel="stylesheet" href="http://cdn.staticfile.org/prettify/r298/prettify.min.css">
+<style>
+li.L0, li.L1, li.L2, li.L3, li.L5, li.L6, li.L7, li.L8 {
+    list-style-type: decimal;
+}
+</style>
+<script src="http://cdn.staticfile.org/prettify/r298/prettify.min.js"></script>
 <script type="text/javascript">
 var position = $('#code').position();
 var qid = {{.q.Id}};
@@ -13,6 +20,6 @@ $(function() {
 	{{if .isLogin}}
 	$('#code').csNewComment({postUrl: '/c', qid: {{.q.Id}}, isLogin: {{if .isLogin}}true{{else}}false{{end}}{{if .isLogin}}, uid: {{.user.Id}}{{end}}});
 	{{end}}
-	$('pre code').each(function(i, e) {hljs.highlightBlock(e)});
+	prettyPrint();
 });
 </script>
