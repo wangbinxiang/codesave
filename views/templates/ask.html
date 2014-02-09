@@ -4,15 +4,16 @@
 	<input name="Id" value="{{.q.Id}}" type="hidden">
 	{{end}}
 	<div class="form-group">
-		<label><h2>你的问题</h2></label><h2 class="pull-right"><button class="btn btn-primary" type="submit">提交问题</button></h2>
-		<input type="text" name="Title" class="form-control validate[required,minSize[5],maxSize[50]]" placeholder="请输入你的问题..." {{if .edit}}value="{{.q.Title}}" {{end}} >
+	    <label><h3>分享代码</h3></label>
+		<h2 class="pull-right"><button class="btn btn-primary" type="submit">提交</button></h2>
+		<input type="text" name="Title" class="form-control validate[required,minSize[5],maxSize[50]]" placeholder="输入一个标题.." {{if .edit}}value="{{.q.Title}}" {{end}} >
 		{{ .xsrfdata }}
 	</div>
-	<div class="marketing">
-		<h4 class="text-muted">请输入你的代码。</h4>
-		<textarea spellcheck="false" class="tabIndent form-control validate[required,minSize[10]]" id="editor"  rows="15" name="Content">{{if .edit}}{{.q.Content}}{{end}}</textarea>
+	<div class="form-group">
+		<textarea spellcheck="false" class="tabIndent form-control validate[required,minSize[10]]" id="editor"  rows="15" name="Content" placeholder="输入要分享的代码.." >{{if .edit}}{{.q.Content}}{{end}}</textarea>
+		<h2 class="pull-right"><button class="btn btn-primary" type="submit">提交</button></h2>
 	</div>
-	<div class="marketing">
+	<div class="form-group">
 		<pre>
 			<code id="previewEditor" class="prettyprint linenums">
 			</code>
