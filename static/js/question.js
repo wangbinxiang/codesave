@@ -27,7 +27,7 @@
 		        }
 		        settings.mouseLocation.pageX = event.pageX;
 		        settings.mouseLocation.pageY = event.pageY;
-		        $('#popover').css({top: event.pageY - 20, left: event.pageX + 5}).show();
+		        $('#popover').css({top: event.pageY - 20, left: event.pageX}).show();
 		    }).bind('click', function(){
 		      $('#popover').hide();
 		    });
@@ -154,7 +154,7 @@
 	function insertComment(comment, id, nickname, left, top){
 		comment = htmlspecialchars($.trim(comment));
 		var shortComment = substr(comment, 0, 10);
-		var commentHtml = '<div id="comment' + id + '" class="comment popover fade right in" style="top: ' + top + 'px; left: ' + left + 'px; display: block;">\
+		var commentHtml = '<div id="comment' + id + '" class="comment popover fade right in" style="top: ' + (top - 20) + 'px; left: ' + left + 'px; display: block;">\
 		<div id="commentArrow' + id + '" class="arrow"></div>\
 		<div id="commentTitle' + id + '" class="popover-content" style="border-bottom: 1px solid #eee;display:none;">\
 		<a>' + nickname + '</a> <button type="button" class="close commentClose' + id + '" aria-hidden="true">&times;</button><button id="commentHidden' + id + '" type="button" class="close" aria-hidden="true">&minus;</button>\
@@ -169,19 +169,19 @@
 
 	function _bindComment(id){
 		$('#commentShort' + id).bind('click', function(){
+			var baseHeight = parseInt($('#comment' + id).css('height'));
 			$('#commentTitle' + id).fadeIn();
-			var baseHeight = parseInt($('#test').css('height'));
 			$('#comment' + id).animate({'max-width': "500px", 'min-width': '276px'}, 500);
 			$('#commentShort' + id).addClass('hidden');
 			$('#commentTotal' + id).removeClass('hidden');
 			var newHeight = parseInt($('#comment' + id).css('height'));
-				$('#commentArrow' + id).css({'top': (baseHeight/newHeight * 100 / 2 ) + '%'});
-			});
-			$('.commentClose' + id).bind('click', function(event){
-				$('#comment' + id).hide();
-				event.stopPropagation();
-			});
-			$('#commentHidden' + id).bind('click', function(){
+			$('#commentArrow' + id).css({'top': (baseHeight/newHeight * 100 / 2 ) + '%'});
+		});
+		$('.commentClose' + id).bind('click', function(event){
+			$('#comment' + id).hide();
+			event.stopPropagation();
+		});
+		$('#commentHidden' + id).bind('click', function(){
 			$('#commentTitle' + id).hide();
 			$('#commentShort' + id).fadeIn().removeClass('hidden');
 			$('#commentTotal' + id).addClass('hidden');
