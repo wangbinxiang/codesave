@@ -25,7 +25,9 @@ func (this *QuestionController) Get() {
 				if len(commentInfos) > 0 {
 					uids := []int64{}
 					for _, v := range commentInfos {
-						uids = append(uids, v["Uid"].(int64))
+						if v["Uid"].(int64) > 0 {
+							uids = append(uids, v["Uid"].(int64))
+						}
 					}
 
 					userAccounts, _, err := m.GetUserAccountListByUids(uids)
@@ -39,7 +41,11 @@ func (this *QuestionController) Get() {
 						}
 
 						for k, v := range commentInfos {
-							commentInfos[k]["Nickname"] = userAccountNicknameList[v["Uid"].(int64)]
+							if v["Uid"].(int64) > 0 {
+								commentInfos[k]["Nickname"] = userAccountNicknameList[v["Uid"].(int64)]
+							} else {
+								commentInfos[k]["Nickname"] = "游客"
+							}
 						}
 					}
 					this.Data["cMore"] = more

@@ -11,7 +11,7 @@ import (
 type CommentInfo struct {
 	Id          int64
 	Qid         int       `orm:"index" valid:"Max(100);Min(1)"`
-	Uid         int       `orm:"index" valid:"Max(100);Min(1)"`
+	Uid         int       `orm:"index" valid:"Max(100);Min(0)"`
 	Content     string    `orm:"size(255)" valid:"MinSize(5);MaxSize(765)"`
 	Left        string    `orm:"size(255)" valid:"MaxSize(255);Match(/^[0-9]\\d*\\.?\\d*$/)"`
 	Top         string    `orm:"size(255)" valid:"MaxSize(255);Match(/^[0-9]\\d*\\.?\\d*$/)"`

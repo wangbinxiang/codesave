@@ -135,7 +135,7 @@
 		csShowCommentBody: function(comments) {
 			var html = '';
 			for (var i = comments.length - 1; i >= 0; i--) {
-				html += '<tr><td>' + comments[i].Nickname + '</td><td>' +substr(comments[i].Content, 0, 30) + '</td></tr>';
+				html += '<tr><td>' + comments[i].Nickname + '</td><td>' +substr(comments[i].Content, 0, 60) + '</td></tr>';
 			};
 			$('#commentBody').html(html);
 		}
@@ -153,8 +153,8 @@
 	}
 	function insertComment(comment, id, nickname, left, top){
 		comment = htmlspecialchars($.trim(comment));
-		var shortComment = substr(comment, 0, 10);
-		var commentHtml = '<div id="comment' + id + '" class="comment popover fade right in" style="top: ' + (top - 20) + 'px; left: ' + left + 'px; display: block;">\
+		var shortComment = substr(comment, 0, 20);
+		var commentHtml = '<div id="comment' + id + '" class="comment popover fade right in" style="top: ' + (top - 20) + 'px; left: ' + left + 'px; display: block; z-index:' + id + '">\
 		<div id="commentArrow' + id + '" class="arrow"></div>\
 		<div id="commentTitle' + id + '" class="popover-content" style="border-bottom: 1px solid #eee;display:none;">\
 		<a>' + nickname + '</a> <button type="button" class="close commentClose' + id + '" aria-hidden="true">&times;</button><button id="commentHidden' + id + '" type="button" class="close" aria-hidden="true">&minus;</button>\

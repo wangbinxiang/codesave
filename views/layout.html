@@ -8,6 +8,8 @@
 			{{if .isLogin}}
 			var user_id = {{.user.Id}};
 			var user_nickname = {{.user.Nickname}};
+			{{else}}
+			var user_nickname = '游客';
 			{{end}};
 		</script>
 	</head>

@@ -17,9 +17,7 @@ $.csShowComment('{{.Content}}', '{{.Id}}', '{{.Nickname}}', position.left + pars
 {{end}}
 $.csShowPageButton({{.cMore}});
 $(function() {
-	{{if .isLogin}}
 	$('#code').csNewComment({postUrl: '/c', qid: {{.q.Id}}, isLogin: {{if .isLogin}}true{{else}}false{{end}}{{if .isLogin}}, uid: {{.user.Id}}{{end}}});
-	{{end}}
 	prettyPrint();
 });
 </script>

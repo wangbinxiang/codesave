@@ -10,11 +10,6 @@ type CommentController struct {
 	libs.BaseController
 }
 
-func (this *CommentController) Prepare() {
-	this.BaseController.Prepare()
-	this.LoginJump(true)
-}
-
 func (this *CommentController) Post() {
 	if this.IsAjax() {
 		commentInfo := m.CommentInfo{}
@@ -24,7 +19,9 @@ func (this *CommentController) Post() {
 		} else {
 			_, err := m.GetQuestionIssue(int64(commentInfo.Qid))
 			if err == nil {
-				commentInfo.Uid = int(this.LoginUser.Id)
+				if this.IsLogin {
+					commentInfo.Uid = int(this.LoginUser.Id)
+				}
 
 				err := m.Orm.Begin()
 
