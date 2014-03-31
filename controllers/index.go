@@ -27,7 +27,7 @@ func (this *IndexController) Get() {
 		if len(questionIssues) > 0 {
 			uids := []int64{}
 			for _, v := range questionIssues {
-				uids = append(uids, v["Uid"].(int64))
+				uids = append(uids, v["UserAccount"].(int64))
 			}
 
 			userAccounts, _, err := m.GetUserAccountListByUids(uids)
@@ -41,7 +41,7 @@ func (this *IndexController) Get() {
 				}
 
 				for k, v := range questionIssues {
-					questionIssues[k]["Nickname"] = userAccountNicknameList[v["Uid"].(int64)]
+					questionIssues[k]["Nickname"] = userAccountNicknameList[v["UserAccount"].(int64)]
 				}
 			}
 		}

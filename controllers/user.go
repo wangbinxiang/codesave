@@ -15,7 +15,7 @@ func (this *UserController) Prepare() {
 	this.LoginJump(true)
 }
 
-var userQuestionPageSize int64 = 10
+var UserQuestionPageSize int64 = 10
 
 func (this *UserController) Get() {
 	page, err := this.GetInt("page")
@@ -24,7 +24,7 @@ func (this *UserController) Get() {
 		page = 1
 	}
 
-	questionIssues, more, err := m.GetQuestionIssueListByUid(this.LoginUser.Id, page, userQuestionPageSize)
+	questionIssues, more, err := m.GetQuestionIssueListByUid(this.LoginUser.Id, page, UserQuestionPageSize)
 
 	if this.IsAjax() {
 		for k, _ := range questionIssues {

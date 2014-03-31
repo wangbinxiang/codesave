@@ -9,18 +9,18 @@ import (
 )
 
 type CommentInfo struct {
-	Id          int64
-	Qid         int       `orm:"index" valid:"Max(100);Min(1)"`
-	Uid         int       `orm:"index" valid:"Max(100);Min(0)"`
-	Content     string    `orm:"size(255)" valid:"MinSize(5);MaxSize(765)"`
-	Left        string    `orm:"size(255)" valid:"MaxSize(255);Match(/^[0-9]\\d*\\.?\\d*$/)"`
-	Top         string    `orm:"size(255)" valid:"MaxSize(255);Match(/^[0-9]\\d*\\.?\\d*$/)"`
-	PublishTime time.Time `orm:"auto_now_add;type(datetime)"`
+	Id            int64
+	Content       string         `orm:"size(255)" valid:"MinSize(5);MaxSize(255)"`
+	Left          string         `orm:"size(255)" valid:"MaxSize(255);Match(/^[0-9]\\d*\\.?\\d*$/)"`
+	Top           string         `orm:"size(255)" valid:"MaxSize(255);Match(/^[0-9]\\d*\\.?\\d*$/)"`
+	PublishTime   time.Time      `orm:"auto_now_add;type(datetime)"`
+	QuestionIssue *QuestionIssue `orm:"rel(fk)"`
+	UserAccount   *UserAccount   `orm:"rel(fk)"`
 }
 
 func (c *CommentInfo) TableIndex() [][]string {
 	return [][]string{
-		[]string{"Qid", "Id"},
+		[]string{"question_issue_id", "Id"},
 	}
 }
 
@@ -54,22 +54,24 @@ func AddCommentInfo(c *CommentInfo) (int64, error) {
 	return id, err
 }
 
-func GetCommentInfoListByQid(qid int64, page int64, page_size int64) ([]orm.Params, bool, error) {
-	var commentInfos []orm.Params
-	var offset int64
+func GetCommentInfoListByQid(qid int64, page int64, pageSize int64) ([]orm.Params, bool, error) {
+	var (
+		commentInfos []orm.Params
+		offset       int64
+		table        CommentInfo
+	)
 	if page <= 1 {
 		offset = 0
 	} else {
-		offset = (page - 1) * page_size
+		offset = (page - 1) * pageSize
 	}
 
-	var table CommentInfo
-	count, err := Orm.QueryTable(table).Filter("qid", qid).Limit(page_size+1, offset).OrderBy("-id").Values(&commentInfos)
+	count, err := Orm.QueryTable(table).Filter("question_issue_id", qid).Limit(pageSize+1, offset).OrderBy("-id").Values(&commentInfos)
 
 	more := false
-	if count > page_size {
+	if count > pageSize {
 		more = true
-		commentInfos = commentInfos[:page_size]
+		commentInfos = commentInfos[:pageSize]
 	}
 
 	return commentInfos, more, err

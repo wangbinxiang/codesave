@@ -11,7 +11,7 @@ type QuestionController struct {
 	libs.BaseController
 }
 
-var commentPageSize int64 = 10
+const CommentPageSize int64 = 10
 
 func (this *QuestionController) Get() {
 	qid, _ := this.GetInt(":qid")
@@ -20,13 +20,15 @@ func (this *QuestionController) Get() {
 		questuionIssue, err := m.GetQuestionIssue(qid)
 		if err == nil {
 			//获取评论
-			commentInfos, more, err := m.GetCommentInfoListByQid(questuionIssue.Id, 1, commentPageSize)
+			commentInfos, more, err := m.GetCommentInfoListByQid(questuionIssue.Id, 1, CommentPageSize)
 			if err == nil {
 				if len(commentInfos) > 0 {
+					questionTags, count, err := m.GetQuestionTagListByQid(questuionIssue.Id)
+					log.Println(questionTags, count, err)
 					uids := []int64{}
 					for _, v := range commentInfos {
-						if v["Uid"].(int64) > 0 {
-							uids = append(uids, v["Uid"].(int64))
+						if v["UserAccount"].(int64) > 0 {
+							uids = append(uids, v["UserAccount"].(int64))
 						}
 					}
 
@@ -41,8 +43,8 @@ func (this *QuestionController) Get() {
 						}
 
 						for k, v := range commentInfos {
-							if v["Uid"].(int64) > 0 {
-								commentInfos[k]["Nickname"] = userAccountNicknameList[v["Uid"].(int64)]
+							if v["UserAccount"].(int64) > 0 {
+								commentInfos[k]["Nickname"] = userAccountNicknameList[v["UserAccount"].(int64)]
 							} else {
 								commentInfos[k]["Nickname"] = "游客"
 							}
@@ -77,12 +79,12 @@ func (this *QuestionController) GetComment() {
 			page = 2
 		}
 
-		commentInfos, more, err := m.GetCommentInfoListByQid(qid, page, commentPageSize)
+		commentInfos, more, err := m.GetCommentInfoListByQid(qid, page, CommentPageSize)
 		if err == nil {
 
 			uids := []int64{}
 			for _, v := range commentInfos {
-				uids = append(uids, v["Uid"].(int64))
+				uids = append(uids, v["UserAccount"].(int64))
 			}
 
 			userAccounts, _, err := m.GetUserAccountListByUids(uids)
@@ -96,7 +98,7 @@ func (this *QuestionController) GetComment() {
 				}
 
 				for k, v := range commentInfos {
-					commentInfos[k]["Nickname"] = userAccountNicknameList[v["Uid"].(int64)]
+					commentInfos[k]["Nickname"] = userAccountNicknameList[v["UserAccount"].(int64)]
 				}
 			}
 

@@ -25,4 +25,6 @@ func init() {
 	beego.Router("/c", &controllers.CommentController{})
 
 	beego.Router("/u", &controllers.UserController{})
+
+	beego.Router("/t", &controllers.TagController{})
 }

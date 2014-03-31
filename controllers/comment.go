@@ -12,31 +12,37 @@ type CommentController struct {
 
 func (this *CommentController) Post() {
 	if this.IsAjax() {
-		commentInfo := m.CommentInfo{}
 		result := map[string]interface{}{"result": false, "id": 0}
-		if err := this.ParseForm(&commentInfo); err != nil {
-			log.Println(err)
-		} else {
-			_, err := m.GetQuestionIssue(int64(commentInfo.Qid))
-			if err == nil {
-				if this.IsLogin {
-					commentInfo.Uid = int(this.LoginUser.Id)
-				}
+		qid, _ := this.GetInt("Qid")
+		log.Println(qid)
+		if qid > 0 {
+			commentInfo := m.CommentInfo{}
+			if err := this.ParseForm(&commentInfo); err != nil {
+				log.Println(err)
+			} else {
+				commentInfo.QuestionIssue = new(m.QuestionIssue)
+				commentInfo.QuestionIssue.Id = qid
+				_, err := m.GetQuestionIssue(int64(commentInfo.QuestionIssue.Id))
+				if err == nil {
+					commentInfo.UserAccount = new(m.UserAccount)
+					if this.IsLogin {
+						commentInfo.UserAccount.Id = int64(this.LoginUser.Id)
+					}
 
-				err := m.Orm.Begin()
-
-				id, err := m.AddCommentInfo(&commentInfo)
-				if err != nil || id == 0 {
-					m.Orm.Rollback()
-				} else {
-					num, err := m.AddQuestionIssueCommentNum(int64(commentInfo.Qid))
-					if err != nil || num == 0 {
+					err := m.Orm.Begin()
+					id, err := m.AddCommentInfo(&commentInfo)
+					if err != nil || id == 0 {
 						m.Orm.Rollback()
 					} else {
-						m.Orm.Commit()
+						num, err := m.AddQuestionIssueCommentNum(int64(commentInfo.QuestionIssue.Id))
+						if err != nil || num == 0 {
+							m.Orm.Rollback()
+						} else {
+							m.Orm.Commit()
 
-						result["result"] = true
-						result["id"] = id
+							result["result"] = true
+							result["id"] = id
+						}
 					}
 				}
 			}

@@ -10,14 +10,16 @@ import (
 )
 
 type UserAccount struct {
-	Id           int64
-	Email        string    `orm:"size(128),unique" valid:"Email;MaxSize(128)"`
-	Nickname     string    `orm:"size(32),unique" valid:"MinSize(2);MaxSize(32);Match(/^([^\\x00-\\xff\\s]|[0-9a-zA-Z_])+$/)"`
-	Password     string    `orm:"size(32)" valid:"MinSize(6);MaxSize(16)"`
-	Salt         string    `orm:"size(5)" valid:"Length(5)"`
-	RegisterTime time.Time `orm:"auto_now_add;type(datetime)"`
-	UpdateTime   time.Time `orm:"auto_now;type(datetime)"`
-	Ip           string    `orm:"size(32)" valid:"IP"`
+	Id            int64
+	Email         string           `orm:"size(128),unique" valid:"Email;MaxSize(128)"`
+	Nickname      string           `orm:"size(32),unique" valid:"MinSize(2);MaxSize(32);Match(/^([^\\x00-\\xff\\s]|[0-9a-zA-Z_])+$/)"`
+	Password      string           `orm:"size(32)" valid:"MinSize(6);MaxSize(16)"`
+	Salt          string           `orm:"size(5)" valid:"Length(5)"`
+	RegisterTime  time.Time        `orm:"auto_now_add;type(datetime)"`
+	UpdateTime    time.Time        `orm:"auto_now;type(datetime)"`
+	Ip            string           `orm:"size(32)" valid:"IP"`
+	QuestionIssue []*QuestionIssue `orm:"reverse(many)"`
+	CommentInfo   []*CommentInfo   `orm:"reverse(many)"`
 }
 
 // 设置引擎为 INNODB

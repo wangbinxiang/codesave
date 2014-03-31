@@ -12,9 +12,11 @@ import (
 	// "time"
 )
 
-var registerKeyPrefix string = "rKey_"
-var registerExpired int64 = 3600
-var registerRecaptchaNumber = 3
+const (
+	RegisterKeyPrefix       string = "rKey_"
+	RegisterExpired         int64  = 3600
+	RegisterRecaptchaNumber        = 3
+)
 
 type RegisterController struct {
 	libs.BaseController
@@ -26,7 +28,7 @@ func (this *RegisterController) Prepare() {
 }
 
 func (this *RegisterController) Get() {
-	registerKey := registerKeyPrefix + this.Ctx.Input.IP()
+	registerKey := RegisterKeyPrefix + this.Ctx.Input.IP()
 	if Memcache.IsExist(registerKey) {
 		registerStr := Memcache.Get(registerKey).(string)
 		log.Println(registerStr)
@@ -35,7 +37,7 @@ func (this *RegisterController) Get() {
 		if err != nil {
 			beego.Error(err)
 		}
-		if registerNumber > registerRecaptchaNumber {
+		if registerNumber > RegisterRecaptchaNumber {
 			this.Data["showRecaptcha"] = true
 			this.Data["publicKey"] = beego.AppConfig.String("googleRecaptchaPublicKey")
 		}
@@ -64,12 +66,12 @@ func (this *RegisterController) Post() {
 	recaptchaCheck := false
 	registerNumber := 0
 	registerStr := ""
-	registerKey := registerKeyPrefix + userAccount.Ip
+	registerKey := RegisterKeyPrefix + userAccount.Ip
 	if Memcache.IsExist(registerKey) {
 		registerStr = Memcache.Get(registerKey).(string)
 		registerNumber, err = strconv.Atoi(registerStr)
 		if err == nil {
-			if registerNumber > registerRecaptchaNumber {
+			if registerNumber > RegisterRecaptchaNumber {
 				noNeedRecaptcha = false
 				recaptchaCheck = h.GoogleRecaptcha(privateKey, userAccount.Ip, challenge, response)
 			}
@@ -88,10 +90,10 @@ func (this *RegisterController) Post() {
 				if Memcache.IsExist(registerKey) {
 					registerNumber++
 					registerStr = strconv.Itoa(registerNumber)
-					err = Memcache.Put(registerKey, registerStr, registerExpired)
+					err = Memcache.Put(registerKey, registerStr, RegisterExpired)
 					log.Println(err)
 				} else {
-					Memcache.Put(registerKey, "1", registerExpired)
+					Memcache.Put(registerKey, "1", RegisterExpired)
 				}
 
 				cookieHash := beego.AppConfig.String("cookieHash")

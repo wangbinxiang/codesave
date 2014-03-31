@@ -1,21 +1,46 @@
-<form class="form-signin" id="askForm" method="POST">
-	{{if .edit}}
-	<input name="_method" value="put" type="hidden">
-	<input name="Id" value="{{.q.Id}}" type="hidden">
-	{{end}}
-	<div class="form-group">
-	    <label><h3>分享代码</h3></label>
-		<h2 class="pull-right"><button class="btn btn-primary" type="submit">提交</button></h2>
-		<input type="text" name="Title" class="form-control validate[required,minSize[5],maxSize[50]]" placeholder="输入一个标题.." {{if .edit}}value="{{.q.Title}}" {{end}} >
-		{{ .xsrfdata }}
-	</div>
-	<div class="form-group">
-		<textarea spellcheck="false" class="tabIndent form-control validate[required,minSize[10]]" id="editor"  rows="15" name="Content" placeholder="输入要分享的代码.." >{{if .edit}}{{.q.Content}}{{end}}</textarea>
-	</div>
-	<div class="form-group">
-		<pre>
-			<code id="previewEditor" class="prettyprint linenums">
-			</code>
-		</pre>
-	</div>
-</form>
+<div class="row row-offcanvas row-offcanvas-right">
+	<form class="form-signin" id="askForm" method="POST">
+		<div class="col-xs-12 col-sm-9">
+			{{if .edit}}
+			<input name="_method" value="put" type="hidden">
+			<input name="Id" value="{{.q.Id}}" type="hidden">
+			{{end}}
+			<div class="form-group">
+			    <label><h3>分享代码</h3></label>
+				<h2 class="pull-right"><button class="btn btn-primary" type="submit">提交</button></h2>
+				<input type="text" name="Title" class="form-control validate[required,minSize[5],maxSize[50]]" placeholder="输入一个标题.." {{if .edit}}value="{{.q.Title}}" {{end}} >
+				{{ .xsrfdata }}
+			</div>
+			<div class="form-group">
+				<textarea spellcheck="false" class="tabIndent form-control validate[required,minSize[10]]" id="editor"  rows="15" name="Content" placeholder="输入要分享的代码.." >{{if .edit}}{{.q.Content}}{{end}}</textarea>
+			</div>
+			<div class="form-group">
+				<pre>
+					<code id="previewEditor" class="prettyprint linenums">
+					</code>
+				</pre>
+			</div>
+		</div>
+		<div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+			{{.SideBar}}
+			<img style="width:100%;margin-top:10px;" src="/static/img/MATRIX.jpg">
+			{{if .tagCount}}
+				<label><h3>添加相关标签</h3></label>
+				<ul class="list-unstyled" id="addTagList">
+
+				</ul>
+				<div class="input-group" style="margin-top:10px;">
+		            <input type="text" class="form-control" placeholder="代码相关标签">
+		            <div class="input-group-btn">
+		              <button type="button" class="btn btn-primary" tabindex="-1">添加</button>
+		            </div>
+		          </div>
+				<div class="list-group table-bordered tag-list" id="tagList">
+					{{range .tagLabels}}
+					<span data-tid="{{.Id}}" class="label label-primary hand">{{.Name}}</span>
+					{{end}}
+				</div>
+			{{end}}
+		</div>
+	</form>
+</div>

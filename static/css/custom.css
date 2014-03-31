@@ -1,0 +1,15 @@
+.container {
+	width: 1150px;
+}
+.tag-cancel {
+	margin-left: 5px;
+	vertical-align: middle;
+}
+.hand {
+	cursor:pointer;
+}
+.tag-list {
+	margin-top: 5px;
+	padding: 8px 10px;
+	border: 1px solid #c6c6c6;
+}

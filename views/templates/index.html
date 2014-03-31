@@ -1,29 +1,48 @@
-<div class="bs-example">
-	<table class="table table-striped">
-		<thead>
-			<tr>
-				<th>标题</th>
-				<th>发布者</th>
-				<th>吐槽数</th>
-			</tr>
-		</thead>
-		<tbody>
-			{{range .q}}
-			<tr>
-				<td><a href="/q/{{.Id}}">{{.Title}}</a></td>
-				<td>{{.Nickname}}</td>
-				<td>{{.CommentNum}}</td>
-			</tr>
-			{{end}}
-		</tbody>
-	</table>
+<div class="row row-offcanvas row-offcanvas-right">
+	<div class="col-xs-12 col-sm-9">
+		<div class="bs-example">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>标题</th>
+						<th>发布者</th>
+						<th>吐槽数</th>
+					</tr>
+				</thead>
+				<tbody>
+					{{range .q}}
+					<tr>
+						<td><a href="/q/{{.Id}}">{{.Title}}</a></td>
+						<td>{{.Nickname}}</td>
+						<td>{{.CommentNum}}</td>
+					</tr>
+					{{end}}
+				</tbody>
+			</table>
 
-	<ul class="pager pull-right">
-		{{if .prev}}
-			<li><a href="/{{.prevPage}}">上一页</a></li>
-		{{end}}
-		{{if .next}}
-			<li><a href="/{{.nextPage}}">下一页</a></li>
-		{{end}}
-	</ul>
+			<ul class="pager pull-right">
+				{{if .prev}}
+					<li><a href="/{{.prevPage}}">上一页</a></li>
+				{{end}}
+				{{if .next}}
+					<li><a href="/{{.nextPage}}">下一页</a></li>
+				{{end}}
+			</ul>
+		</div>
+	</div>
+	<div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+		{{.SideBar}}
+		<div class="list-group">
+			<a href="#" class="list-group-item active">Link</a>
+			<a href="#" class="list-group-item">Link</a>
+			<a href="#" class="list-group-item">Link</a>
+			<a href="#" class="list-group-item">Link</a>
+			<a href="#" class="list-group-item">Link</a>
+			<a href="#" class="list-group-item">Link</a>
+			<a href="#" class="list-group-item">Link</a>
+			<a href="#" class="list-group-item">Link</a>
+			<a href="#" class="list-group-item">Link</a>
+			<a href="#" class="list-group-item">Link</a>
+		</div>
+	</div>
 </div>

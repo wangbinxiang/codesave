@@ -21,11 +21,23 @@ func (this *AskController) Get() {
 	qid, _ := this.GetInt(":qid")
 
 	this.Data["edit"] = false //编辑问题标示
+
+	//get all tag info
+	tagLabels, tagCount, err := m.GetAllTagLabelList()
+
+	if err != nil {
+		log.Println(err)
+	} else {
+		this.Data["tagCount"] = tagCount
+		log.Println(tagCount)
+		this.Data["tagLabels"] = tagLabels
+	}
+
 	if qid > 0 {
 		questuionIssue, err := m.GetQuestionIssue(qid)
 
 		if err == nil {
-			if this.LoginUser.Id != int64(questuionIssue.Uid) {
+			if this.LoginUser.Id != int64(questuionIssue.UserAccount.Id) {
 				this.Redirect("/a", 302)
 			}
 
@@ -49,7 +61,8 @@ func (this *AskController) Post() {
 	if err := this.ParseForm(&questuionIssue); err != nil {
 		this.Redirect("/a", 302)
 	}
-	questuionIssue.Uid = int(this.LoginUser.Id)
+	questuionIssue.UserAccount = new(m.UserAccount)
+	questuionIssue.UserAccount.Id = int64(this.LoginUser.Id)
 	id, err := m.AddQuestionIssue(&questuionIssue)
 	if err != nil {
 		this.Redirect("/a", 302)
@@ -75,7 +88,7 @@ func (this *AskController) Put() {
 		} else {
 			num, err := m.UpdateQuestionIssue(&questuionIssue)
 			log.Println(num, err)
-			url := "/a/" + strconv.Itoa(int(questuionIssue.Id))
+			url := "/q/" + strconv.Itoa(int(questuionIssue.Id))
 			this.Redirect(url, 302)
 		}
 	} else {
