@@ -850,3 +850,15 @@ func GoogleRecaptcha(privateKey, ip, challenge, response string) bool {
 	recaptcha.Init(privateKey)
 	return recaptcha.Confirm(ip, challenge, response)
 }
+
+func SliceStringToInt64(s []string) []int64 {
+	sliceInt := make([]int64, 0, len(s))
+	for _, v := range s {
+		i, err := strconv.ParseInt(v, 10, 64)
+		if err == nil {
+			sliceInt = append(sliceInt, i)
+		}
+
+	}
+	return sliceInt
+}

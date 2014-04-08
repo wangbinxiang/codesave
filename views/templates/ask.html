@@ -7,7 +7,7 @@
 			{{end}}
 			<div class="form-group">
 			    <label><h3>分享代码</h3></label>
-				<h2 class="pull-right"><button class="btn btn-primary" type="submit">提交</button></h2>
+				<h2 class="pull-right"><button class="btn btn-primary" id="submitButton" type="button">提交</button></h2>
 				<input type="text" name="Title" class="form-control validate[required,minSize[5],maxSize[50]]" placeholder="输入一个标题.." {{if .edit}}value="{{.q.Title}}" {{end}} >
 				{{ .xsrfdata }}
 			</div>
@@ -26,15 +26,21 @@
 			<img style="width:100%;margin-top:10px;" src="/static/img/MATRIX.jpg">
 			{{if .tagCount}}
 				<label><h3>添加相关标签</h3></label>
+				<div id="tagsAlert" class="alert alert-danger alert-dismissable" style="display:none;">
+				  <button id="tagsAlertButton" type="button" class="close"  aria-hidden="true">&times;</button>
+				  <strong>请至少添加一个标签</strong>
+				</div>
 				<ul class="list-unstyled" id="addTagList">
-
+					{{range .qt}}
+					<li><span class="label label-primary hand">{{.Name}}</span><a href="#" class="tag-cancel" title="删除">&#10006;</a><input type="hidden" name="tags" value="{{.Id}}" /></li>
+					{{end}}
 				</ul>
-				<div class="input-group" style="margin-top:10px;">
-		            <input type="text" class="form-control" placeholder="代码相关标签">
-		            <div class="input-group-btn">
-		              <button type="button" class="btn btn-primary" tabindex="-1">添加</button>
-		            </div>
-		          </div>
+				<!-- <div class="input-group" style="margin-top:10px;">
+					<input type="text" class="form-control" placeholder="代码相关标签">
+					<div class="input-group-btn">
+						<button type="button" class="btn btn-primary" tabindex="-1">添加</button>
+					</div>
+				</div> -->
 				<div class="list-group table-bordered tag-list" id="tagList">
 					{{range .tagLabels}}
 					<span data-tid="{{.Id}}" class="label label-primary hand">{{.Name}}</span>

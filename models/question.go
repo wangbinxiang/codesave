@@ -144,7 +144,7 @@ func AddQuestionIssueCommentNum(qid int64) (int64, error) {
 	return num, err
 }
 
-func AddQUestionTag(q *QuestionTag) (int64, error) {
+func AddQuestionTag(q *QuestionTag) (int64, error) {
 	if err := checkQuestionTag(q); err != nil {
 		return 0, err
 	}
@@ -152,6 +152,34 @@ func AddQUestionTag(q *QuestionTag) (int64, error) {
 	id, err := Orm.Insert(q)
 
 	return id, err
+}
+
+func DelQuestionTag(q *QuestionTag) (int64, error) {
+	if err := checkQuestionTag(q); err != nil {
+		return 0, err
+	}
+	log.Println("q:", q)
+	num, err := Orm.Delete(q)
+
+	return num, err
+}
+
+func AddQuestionTagMulti(q *QuestionIssue, tags []int64) (int64, error) {
+	var (
+		questionTags []QuestionTag
+		successNums  int64
+		err          error
+	)
+	questionTags = make([]QuestionTag, 0, int64(len(tags)))
+	log.Println(questionTags)
+	for _, v := range tags {
+		var tagLabel TagLabel
+		tagLabel.Id = v
+		questionTags = append(questionTags, QuestionTag{TagLabel: &tagLabel, QuestionIssue: q})
+	}
+	log.Println(questionTags)
+	successNums, err = Orm.InsertMulti(len(questionTags), questionTags)
+	return successNums, err
 }
 
 func GetQuestionTagListByQid(qid int64) ([]orm.Params, int64, error) {

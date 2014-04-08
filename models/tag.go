@@ -114,3 +114,14 @@ func GetAllTagLabelList() ([]orm.Params, int64, error) {
 	count, err = Orm.QueryTable(table).OrderBy("-id").Values(&tagLabels)
 	return tagLabels, count, err
 }
+
+func GetTagLabelListByIds(ids []int64) ([]orm.Params, int64, error) {
+	var (
+		tagLabels []orm.Params
+		table     TagLabel
+		count     int64
+		err       error
+	)
+	count, err = Orm.QueryTable(table).Filter("id__in", ids).Values(&tagLabels)
+	return tagLabels, count, err
+}
