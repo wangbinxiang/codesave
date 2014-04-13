@@ -2,8 +2,11 @@ package controllers
 
 import (
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/utils"
+	"github.com/wangbinxiang/codesave/helper"
 	"github.com/wangbinxiang/codesave/libs"
 	m "github.com/wangbinxiang/codesave/models"
+	"log"
 )
 
 type IndexController struct {
@@ -30,6 +33,13 @@ func (this *IndexController) Get() {
 				uids = append(uids, v["UserAccount"].(int64))
 			}
 
+			uidSliceInterface, ok := helper.TakeSliceArg(uids)
+			if !ok {
+				log.Println("uids error")
+				this.Redirect("/t", 302)
+			}
+			uidSliceInterface = utils.SliceUnique(uidSliceInterface)
+			uids = helper.SliceInterfaceConvert(uidSliceInterface).([]int64)
 			userAccounts, _, err := m.GetUserAccountListByUids(uids)
 
 			if err != nil {

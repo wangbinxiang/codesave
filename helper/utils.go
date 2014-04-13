@@ -22,6 +22,7 @@ import (
 	"net/smtp"
 	"os"
 	"os/exec"
+	"reflect"
 	"regexp"
 	"strconv"
 	"strings"
@@ -861,4 +862,49 @@ func SliceStringToInt64(s []string) []int64 {
 
 	}
 	return sliceInt
+}
+
+func SliceInterfaceConvert(slice []interface{}) interface{} {
+	sliceLen := len(slice)
+	switch reflect.ValueOf(slice[0]).Kind() {
+	case reflect.Int64:
+		sliceConvert := make([]int64, 0, sliceLen)
+		for _, v := range slice {
+			if reflect.ValueOf(v).Kind() == reflect.Int64 {
+				sliceConvert = append(sliceConvert, v.(int64))
+			}
+		}
+		return sliceConvert
+	case reflect.String:
+		sliceConvert := make([]string, 0, sliceLen)
+		for _, v := range slice {
+			if reflect.ValueOf(v).Kind() == reflect.String {
+				sliceConvert = append(sliceConvert, v.(string))
+			}
+		}
+		return sliceConvert
+	}
+	return nil
+}
+
+func TakeSliceArg(arg interface{}) (out []interface{}, ok bool) {
+	slice, success := TakeArg(arg, reflect.Slice)
+	if !success {
+		ok = false
+		return
+	}
+	c := slice.Len()
+	out = make([]interface{}, c)
+	for i := 0; i < c; i++ {
+		out[i] = slice.Index(i).Interface()
+	}
+	return out, true
+}
+
+func TakeArg(arg interface{}, kind reflect.Kind) (val reflect.Value, ok bool) {
+	val = reflect.ValueOf(arg)
+	if val.Kind() == kind {
+		ok = true
+	}
+	return
 }

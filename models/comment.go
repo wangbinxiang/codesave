@@ -48,9 +48,9 @@ func AddCommentInfo(c *CommentInfo) (int64, error) {
 	if err := checkCommentInfo(c); err != nil {
 		return 0, err
 	}
-
+	log.Println(123)
 	id, err := Orm.Insert(c)
-
+	log.Println(id, err)
 	return id, err
 }
 

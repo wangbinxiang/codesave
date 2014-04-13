@@ -30,6 +30,7 @@ func (this *CommentController) Post() {
 					}
 
 					err := m.Orm.Begin()
+					log.Println(commentInfo)
 					id, err := m.AddCommentInfo(&commentInfo)
 					if err != nil || id == 0 {
 						m.Orm.Rollback()

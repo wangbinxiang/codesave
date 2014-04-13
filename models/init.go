@@ -18,6 +18,7 @@ func MysqlRegisterDB() {
 	mysqlDB := beego.AppConfig.String("mysqldb")
 
 	orm.RegisterDataBase("default", "mysql", fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8", mysqlUser, mysqlPass, mysqlHost, mysqlPort, mysqlDB))
+	orm.Debug = true
 	Orm = orm.NewOrm()
 }
 

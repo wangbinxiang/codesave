@@ -9,14 +9,15 @@ import (
 )
 
 type TagLabel struct {
-	Id          int64
-	Name        string `orm:"size(50)" "valid:"MinSize(1);MaxSize(50)"`
-	Description string `orm:"size(255)" "valid:"MaxSize(255)"`
-	FollowNum   uint
-	QuestionNum uint
-	Status      int8      `orm:"Min(0);Max(1)"`
-	CreateTime  time.Time `orm:"index;auto_now_add;type(datetime)"`
-	UpdateTime  time.Time `orm:"auto_now;type(datetime)"`
+	Id           int64
+	Name         string `orm:"size(50)" "valid:"MinSize(1);MaxSize(50)"`
+	Description  string `orm:"size(255)" "valid:"MaxSize(255)"`
+	FollowNum    uint
+	QuestionNum  uint
+	Status       int8           `orm:"Min(0);Max(1)"`
+	CreateTime   time.Time      `orm:"index;auto_now_add;type(datetime)"`
+	UpdateTime   time.Time      `orm:"auto_now;type(datetime)"`
+	QuestionTags []*QuestionTag `orm:"reverse(many)"`
 }
 
 func (t *TagLabel) TableEngine() string {
@@ -115,6 +116,18 @@ func GetAllTagLabelList() ([]orm.Params, int64, error) {
 	return tagLabels, count, err
 }
 
+func GetAllEnableTagLabelList() ([]orm.Params, int64, error) {
+	var (
+		tagLabels []orm.Params
+		table     TagLabel
+		count     int64
+		err       error
+	)
+
+	count, err = Orm.QueryTable(table).Filter("status", 2).OrderBy("-id").Values(&tagLabels)
+	return tagLabels, count, err
+}
+
 func GetTagLabelListByIds(ids []int64) ([]orm.Params, int64, error) {
 	var (
 		tagLabels []orm.Params
@@ -124,4 +137,21 @@ func GetTagLabelListByIds(ids []int64) ([]orm.Params, int64, error) {
 	)
 	count, err = Orm.QueryTable(table).Filter("id__in", ids).Values(&tagLabels)
 	return tagLabels, count, err
+}
+
+func GetTabLabelByName(t *TagLabel, page, pageSize int64) (int64, error) {
+	var (
+		offset int64
+	)
+	err := Orm.Read(t, "Name")
+	if err != nil {
+		return 0, err
+	}
+	if page <= 1 {
+		offset = 0
+	} else {
+		offset = (page - 1) * pageSize
+	}
+	num, err := Orm.LoadRelated(t, "QuestionTags", true, pageSize+1, offset, "-id")
+	return num, err
 }

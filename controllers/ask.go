@@ -29,7 +29,7 @@ func (this *AskController) Get() {
 	this.Data["edit"] = false //编辑问题标示
 
 	//get all tag info
-	tagLabels, tagCount, err := m.GetAllTagLabelList()
+	tagLabels, tagCount, err := m.GetAllEnableTagLabelList()
 
 	if err != nil {
 		log.Println(err)

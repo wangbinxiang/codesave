@@ -27,4 +27,5 @@ func init() {
 	beego.Router("/u", &controllers.UserController{})
 
 	beego.Router("/t", &controllers.TagController{})
+	beego.Router("/t/:name:string", &controllers.TagController{})
 }

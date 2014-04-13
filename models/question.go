@@ -106,8 +106,10 @@ func GetQuestionIssueList(page int64, pageSize int64) ([]orm.Params, bool, error
 }
 
 func GetQuestionIssueListByUid(uid int64, page int64, pageSize int64) ([]orm.Params, bool, error) {
-	var questionIssues []orm.Params
-	var offset int64
+	var (
+		questionIssues []orm.Params
+		offset         int64
+	)
 	if page <= 1 {
 		offset = 0
 	} else {
@@ -124,6 +126,15 @@ func GetQuestionIssueListByUid(uid int64, page int64, pageSize int64) ([]orm.Par
 
 	return questionIssues, more, err
 
+}
+
+func GetQuestionIssueListByIds(ids []int64) ([]*QuestionIssue, int64, error) {
+	var (
+		questionIssues []*QuestionIssue
+		table          QuestionIssue
+	)
+	count, err := Orm.QueryTable(table).Filter("id__in", ids).All(&questionIssues)
+	return questionIssues, count, err
 }
 
 func UpdateQuestionIssue(q *QuestionIssue) (int64, error) {
