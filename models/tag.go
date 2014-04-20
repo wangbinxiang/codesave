@@ -139,6 +139,26 @@ func GetTagLabelListByIds(ids []int64) ([]orm.Params, int64, error) {
 	return tagLabels, count, err
 }
 
+func AddTagLabelQuestionNum(ids []int64) (int64, error) {
+	var (
+		table TagLabel
+		count int64
+		err   error
+	)
+	count, err = Orm.QueryTable(table).Filter("id__in", ids).Update(orm.Params{"question_num": orm.ColValue(orm.Col_Add, 1)})
+	return count, err
+}
+
+func MinusTagLabelQuestionNum(ids []int64) (int64, error) {
+	var (
+		table TagLabel
+		count int64
+		err   error
+	)
+	count, err = Orm.QueryTable(table).Filter("id__in", ids).Update(orm.Params{"question_num": orm.ColValue(orm.Col_Minus, 1)})
+	return count, err
+}
+
 func GetTabLabelByName(t *TagLabel, page, pageSize int64) (int64, error) {
 	var (
 		offset int64

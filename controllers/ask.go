@@ -102,6 +102,13 @@ func (this *AskController) Post() {
 		m.Orm.Rollback()
 		this.Redirect("/a", 302)
 	}
+
+	_, err = m.AddTagLabelQuestionNum(tags)
+	if err != nil {
+		m.Orm.Rollback()
+		this.Redirect("/a", 302)
+	}
+
 	if id > 0 {
 		m.Orm.Commit()
 		url := "/q/" + strconv.Itoa(int(id))
@@ -151,15 +158,24 @@ func (this *AskController) Put() {
 			}
 			log.Println(num, err)
 			log.Println("questionTagIds:", questionTagIds)
-			if len(questionTagIds) > 0 {
+			delTagsLen := len(questionTagIds)
+			if delTagsLen > 0 {
+				delTagIds := make([]int64, 0, delTagsLen)
 				for _, v := range questionTags {
 					if questionTagIds[v["TagLabel"].(int64)] {
+						delTagIds = append(delTagIds, v["TagLabel"].(int64))
 						num, err = m.DelQuestionTag(&m.QuestionTag{Id: v["Id"].(int64)})
 						log.Println(num, err)
 						if err != nil {
 							m.Orm.Rollback()
 						}
 					}
+				}
+
+				_, err = m.MinusTagLabelQuestionNum(delTagIds)
+				if err != nil {
+					m.Orm.Rollback()
+					this.Redirect("/a", 302)
 				}
 			}
 
@@ -171,6 +187,12 @@ func (this *AskController) Put() {
 				_, err = m.AddQuestionTagMulti(&questuionIssue, tags)
 				if err != nil {
 					m.Orm.Rollback()
+				}
+
+				_, err = m.AddTagLabelQuestionNum(tags)
+				if err != nil {
+					m.Orm.Rollback()
+					this.Redirect("/a", 302)
 				}
 			}
 
