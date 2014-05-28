@@ -31,6 +31,7 @@ func (this *LoginController) Get() {
 
 func (this *LoginController) Post() {
 	email := this.GetString("Email")
+
 	password := this.GetString("Password")
 
 	valid := validation.Validation{}

@@ -11,6 +11,7 @@ func init() {
 	var err error
 	if Memory == nil {
 		Memory, err = cache.NewCache("memory", `{"interval":60}`)
+
 		if err != nil {
 			log.Println(err)
 		}
