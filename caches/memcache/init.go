@@ -2,6 +2,7 @@ package memcache
 
 import (
 	"github.com/astaxie/beego/cache"
+	_ "github.com/astaxie/beego/cache/memcache"
 	"log"
 )
 
