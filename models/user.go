@@ -19,7 +19,6 @@ type UserAccount struct {
 	UpdateTime    time.Time        `orm:"auto_now;type(datetime)"`
 	Ip            string           `orm:"size(32)" valid:"IP"`
 	QuestionIssue []*QuestionIssue `orm:"reverse(many)"`
-	CommentInfo   []*CommentInfo   `orm:"reverse(many)"`
 }
 
 // 设置引擎为 INNODB

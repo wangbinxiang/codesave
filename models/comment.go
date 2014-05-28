@@ -9,13 +9,13 @@ import (
 )
 
 type CommentInfo struct {
-	Id            int64
-	Content       string         `orm:"size(255)" valid:"MinSize(5);MaxSize(255)"`
-	Left          string         `orm:"size(255)" valid:"MaxSize(255);Match(/^[0-9]\\d*\\.?\\d*$/)"`
-	Top           string         `orm:"size(255)" valid:"MaxSize(255);Match(/^[0-9]\\d*\\.?\\d*$/)"`
-	PublishTime   time.Time      `orm:"auto_now_add;type(datetime)"`
-	QuestionIssue *QuestionIssue `orm:"rel(fk)"`
-	UserAccount   *UserAccount   `orm:"rel(fk)"`
+	Id              int64
+	Content         string         `orm:"size(255)" valid:"MinSize(5);MaxSize(255)"`
+	Left            string         `orm:"size(255)" valid:"MaxSize(255);Match(/^[0-9]\\d*\\.?\\d*$/)"`
+	Top             string         `orm:"size(255)" valid:"MaxSize(255);Match(/^[0-9]\\d*\\.?\\d*$/)"`
+	PublishTime     time.Time      `orm:"auto_now_add;type(datetime)"`
+	QuestionIssue   *QuestionIssue `orm:"rel(fk)"`
+	User_account_id int64          `orm:"index"`
 }
 
 func (c *CommentInfo) TableIndex() [][]string {
@@ -48,9 +48,7 @@ func AddCommentInfo(c *CommentInfo) (int64, error) {
 	if err := checkCommentInfo(c); err != nil {
 		return 0, err
 	}
-	log.Println(123)
 	id, err := Orm.Insert(c)
-	log.Println(id, err)
 	return id, err
 }
 

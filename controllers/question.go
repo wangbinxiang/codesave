@@ -27,8 +27,8 @@ func (this *QuestionController) Get() {
 					log.Println(questionTags, count, err)
 					uids := []int64{}
 					for _, v := range commentInfos {
-						if v["UserAccount"].(int64) > 0 {
-							uids = append(uids, v["UserAccount"].(int64))
+						if v["User_account_id"].(int64) > 0 {
+							uids = append(uids, v["User_account_id"].(int64))
 						}
 					}
 
@@ -43,8 +43,8 @@ func (this *QuestionController) Get() {
 						}
 
 						for k, v := range commentInfos {
-							if v["UserAccount"].(int64) > 0 {
-								commentInfos[k]["Nickname"] = userAccountNicknameList[v["UserAccount"].(int64)]
+							if v["User_account_id"].(int64) > 0 {
+								commentInfos[k]["Nickname"] = userAccountNicknameList[v["User_account_id"].(int64)]
 							} else {
 								commentInfos[k]["Nickname"] = "游客"
 							}
