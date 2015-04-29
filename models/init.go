@@ -19,6 +19,8 @@ func MysqlRegisterDB() {
 
 	orm.RegisterDataBase("default", "mysql", fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8", mysqlUser, mysqlPass, mysqlHost, mysqlPort, mysqlDB))
 	// orm.Debug = true
+	MysqlRegisterModelWithPrefix(new(UserAccount), new(QuestionIssue), new(QuestionTag), new(CommentInfo), new(TagLabel))
+	orm.RunCommand()
 	Orm = orm.NewOrm()
 }
 

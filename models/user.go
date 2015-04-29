@@ -39,7 +39,7 @@ func checkUserAccount(u *UserAccount) error {
 }
 
 func init() {
-	MysqlRegisterModelWithPrefix(new(UserAccount))
+	// MysqlRegisterModelWithPrefix(new(UserAccount))
 }
 
 func AddUserAccount(u *UserAccount) (int64, error) {

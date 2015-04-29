@@ -20,7 +20,7 @@ func (this *CommentController) Post() {
 				log.Println(err)
 			} else {
 				commentInfo.QuestionIssue = new(m.QuestionIssue)
-				commentInfo.QuestionIssue.Id = qid
+				commentInfo.QuestionIssue.Id = int64(qid)
 				_, err := m.GetQuestionIssue(int64(commentInfo.QuestionIssue.Id))
 				if err == nil {
 					// commentInfo.UserAccount = new(m.UserAccount)

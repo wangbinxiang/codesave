@@ -37,7 +37,7 @@ func checkTagLabel(t *TagLabel) error {
 }
 
 func init() {
-	MysqlRegisterModelWithPrefix(new(TagLabel))
+	// MysqlRegisterModelWithPrefix(new(TagLabel))
 }
 
 func AddTagLabel(t *TagLabel) (int64, error) {

@@ -11,7 +11,7 @@ import (
 type QuestionIssue struct {
 	Id          int64
 	Title       string    `orm:"size(32)"  valid:"MinSize(5);MaxSize(32)"`
-	Content     string    `orm:"type(text)"  valid:"MinSize(10)"`
+	Content     string    `orm:"type(text):null"  valid:"MinSize(10)"`
 	PublishTime time.Time `orm:"index;auto_now_add;type(datetime)"`
 	UpdateTime  time.Time `orm:"auto_now;type(datetime)"`
 	CommentNum  uint
@@ -62,7 +62,7 @@ func checkQuestionTag(q *QuestionTag) error {
 }
 
 func init() {
-	MysqlRegisterModelWithPrefix(new(QuestionIssue), new(QuestionTag))
+	// MysqlRegisterModelWithPrefix(new(QuestionIssue), new(QuestionTag))
 }
 
 func AddQuestionIssue(q *QuestionIssue) (int64, error) {

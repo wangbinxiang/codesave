@@ -13,7 +13,7 @@ type IndexController struct {
 	libs.BaseController
 }
 
-const indexQuestionPageSize int64 = 10
+const indexQuestionPageSize int64 = 20
 
 func (this *IndexController) Get() {
 	page, _ := this.GetInt(":page")
@@ -21,7 +21,7 @@ func (this *IndexController) Get() {
 	if page <= 0 {
 		page = 1
 	}
-	questionIssues, more, err := m.GetQuestionIssueList(page, indexQuestionPageSize)
+	questionIssues, more, err := m.GetQuestionIssueList(int64(page), indexQuestionPageSize)
 
 	if err != nil {
 		beego.Error(err)

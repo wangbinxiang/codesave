@@ -39,7 +39,7 @@ func (this *AskController) Get() {
 	}
 
 	if qid > 0 {
-		questuionIssue, err := m.GetQuestionIssue(qid)
+		questuionIssue, err := m.GetQuestionIssue(int64(qid))
 
 		if err == nil {
 			if this.LoginUser.Id != int64(questuionIssue.UserAccount.Id) {

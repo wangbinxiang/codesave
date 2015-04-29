@@ -41,7 +41,7 @@ func checkCommentInfo(c *CommentInfo) error {
 }
 
 func init() {
-	MysqlRegisterModelWithPrefix(new(CommentInfo))
+	// MysqlRegisterModelWithPrefix(new(CommentInfo))
 }
 
 func AddCommentInfo(c *CommentInfo) (int64, error) {

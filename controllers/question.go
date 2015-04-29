@@ -17,7 +17,7 @@ func (this *QuestionController) Get() {
 	qid, _ := this.GetInt(":qid")
 
 	if qid > 0 {
-		questuionIssue, err := m.GetQuestionIssue(qid)
+		questuionIssue, err := m.GetQuestionIssue(int64(qid))
 		if err == nil {
 			//获取评论
 			commentInfos, more, err := m.GetCommentInfoListByQid(questuionIssue.Id, 1, CommentPageSize)
@@ -79,7 +79,7 @@ func (this *QuestionController) GetComment() {
 			page = 2
 		}
 
-		commentInfos, more, err := m.GetCommentInfoListByQid(qid, page, CommentPageSize)
+		commentInfos, more, err := m.GetCommentInfoListByQid(int64(qid), int64(page), CommentPageSize)
 		if err == nil {
 
 			uids := []int64{}

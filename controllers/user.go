@@ -24,7 +24,7 @@ func (this *UserController) Get() {
 		page = 1
 	}
 
-	questionIssues, more, err := m.GetQuestionIssueListByUid(this.LoginUser.Id, page, UserQuestionPageSize)
+	questionIssues, more, err := m.GetQuestionIssueListByUid(this.LoginUser.Id, int64(page), UserQuestionPageSize)
 
 	if this.IsAjax() {
 		for k, _ := range questionIssues {
